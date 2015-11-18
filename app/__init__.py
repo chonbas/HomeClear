@@ -4,14 +4,12 @@ from flask.ext.bootstrap import Bootstrap
 from flask.ext.moment import Moment
 from flask.ext.login import LoginManager
 from flask.ext.sqlalchemy import SQLAlchemy
-from flask.ext.pagedown import PageDown
 import flask.ext.whooshalchemy as Whoosh
 from config import config
 
 #initialize all
 db = SQLAlchemy()
 bootstrap = Bootstrap()
-pagedown = Pagedown()
 moment = Moment()
 
 login_manager = LoginManager()
@@ -25,7 +23,6 @@ def create_app(config_name):
 
     login_manager.init_app(app)
     db.init_app(app)
-    pagedown.init_app(app)
     moment.init_app(app)
 
     #prevent circular imports
