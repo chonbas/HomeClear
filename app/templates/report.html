@@ -21,14 +21,15 @@
     </div>
     <div class="btn-toolbar" role="toolbar" aria-label="...">
     <div class="btn-group" role="group" aria-label="...">
-      <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> Basic</button>
-      <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-education" aria-hidden="true"></span> School</button>
-      <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-alert" aria-hidden="true"></span> Crime</button>
-      <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-fire" aria-hidden="true"></span> Geo</button>
-      <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Misc</button>
+      <button type="button" class="btn btn-default" id="basicInfoBtn"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> Basic</button>
+      <button type="button" class="btn btn-default" id="schoolInfoBtn"><span class="glyphicon glyphicon-education" aria-hidden="true"></span> School</button>
+      <button type="button" class="btn btn-default" id="crimeInfoBtn"><span class="glyphicon glyphicon-alert" aria-hidden="true"></span> Crime</button>
+      <button type="button" class="btn btn-default" id="geoInfoBtn"><span class="glyphicon glyphicon-fire" aria-hidden="true"></span> Geo</button>
+      <button type="button" class="btn btn-default" id="miscInfoBtn"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Misc</button>
     </div>
   </div>
-    <ul class="list-group" id="houseinfo">
+    <div class="reportTabs" id="basicInfo">
+    <ul class="list-group">
     <li class="list-group-item" id="houseinfo-heading"><h3>Basic Information</h3></li>
     <li class="list-group-item">Listed price {{ listing.price }}</li>
     <li class="list-group-item">Tax rate: {{ tax_info.rate }}%</li>
@@ -37,10 +38,33 @@
     <li class="list-group-item">Realtor: {{ listing.realtor }}</li>
     <li class="list-group-item">Listed {{ moment(listing.timestamp).fromNow() }}</li>
     </ul>
+    </div>
+    <div class="reportTabs" id="schoolInfo">
+    <ul class="list-group">
+    <li class="list-group-item" id="houseinfo-heading"><h3>School Information</h3></li>
+    <li class="list-group-item">{{ listing.bedrooms }} Bedrooms, {{ listing.bathrooms }} Bathrooms</li>
+    <li class="list-group-item">Realtor: {{ listing.realtor }}</li>
+    <li class="list-group-item">Listed {{ moment(listing.timestamp).fromNow() }}</li>
+    </ul>
+    </div>
 
 </div>
 {% endblock %}
 
 {% block scripts %}
 {{ super() }}
+
+<script>
+$(document).ready(function(){
+  $(".reportTabs").hide();
+  $("#basicInfo").show();
+
+  $("#schoolInfoBtn").click(function(){
+    $("#basicInfo").hide();
+    $("#schoolInfo").show();
+  });
+
+});
+</script>
+
 {% endblock %}
