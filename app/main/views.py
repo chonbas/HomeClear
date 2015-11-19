@@ -6,7 +6,7 @@ from . import main
 from .forms import SearchForm, FilterForm
 from .. import db, moment
 from flask.ext.googlemaps import Map
-from ..models import User, Listing
+from ..models import User, Listing, Tax, School, Geo
 from ..listingGenerator import generateListing
 
 @main.before_app_request
@@ -15,7 +15,7 @@ def before_request():
 
 @main.route('/search', methods=['POST'])
 def search():
-    return redirect(url_for('main.report', address=g.search.search.data))
+        return redirect(url_for('main.report', address=g.search.search.data))
 
 @main.route('/', methods=['GET', 'POST'])
 def index():
@@ -28,12 +28,19 @@ def index():
 
 @main.route('/report/<address>', methods=['GET', 'POST'])
 def report(address):
-    sndmap = Map(
-        identifier="sndmap",
+    gmap = Map(
+        identifier="gmap",
         lat=37.4419,
         lng=-122.1419,
         markers=[(37.4419, -122.1419)],
         style="height:100%;width:100%;margin:0"
     )
     listing = generateListing(address)
-    return render_template('report.html', listing=listing, searchbar=True, map=sndmap)
+    thumbNail = listing.images.first()
+    tax_info = listing.tax_info.first()
+    crime_info = listing.crime_info.first()
+    geo_info = listing.geo_info.first()
+    schools = listing.schools
+    return render_template('report.html', listing=listing, searchbar=True,
+                            map=gmap, tax_info=tax_info, crime_info=crime_info,
+                            geo_info=geo_info, schools=schools)

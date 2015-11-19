@@ -1,6 +1,6 @@
 from . import db
 from .models import Listing, Tax, Image, School, Crime, Geo
-import hashlib
+import hashlib, locale
 
 taxRates =   [5.1, 6.2, 7.8, 9.8, 4.8, 3.4, 7.1, 5.0, 9.1, 3.8]
 
@@ -79,7 +79,9 @@ def getRm(s):
 def getPrice(s):
     area = getArea(s)
     rms = getRm(s)
-    return (area * rms * rms * 50)
+    intPrice =  (area * rms * rms * 50)
+    locale.setlocale( locale.LC_ALL, '' )
+    return locale.currency( intPrice, grouping=True )
 
 def getRealtor(s):
     return realtors[s % len(realtors)]

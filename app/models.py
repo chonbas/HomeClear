@@ -42,7 +42,7 @@ class Listing(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     address = db.Column(db.String(128), unique=True)
-    price = db.Column(db.Integer)
+    price = db.Column(db.String(32))
     area = db.Column(db.Integer)
     bedrooms = db.Column(db.Integer)
     bathrooms = db.Column(db.Integer)
