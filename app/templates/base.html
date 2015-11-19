@@ -44,7 +44,7 @@
               {% if searchbar %}
               <form class="navbar-form navbar-right">
                 <div class="form-group">
-                  <li id="lefty">{{ wtf.quick_form(g.search) }}</li>
+                  <li id="lefty">{{ wtf.quick_form(g.search, action=url_for('main.search', address=g.search.search.data)) }}</li>
                 </div>
               </form>
               {% endif %}

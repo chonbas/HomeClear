@@ -1,13 +1,27 @@
 {% extends "mapView.html" %}
 
 {% block title %}HomeClear - Report{% endblock %}
-
+{% block head %}
+  {{ super() }}
+  {{map.js}}
+{% endblock %}
 {% block left_side %}
-
+  <div id=map>
+  {{map.html}}
+</div>
 {% endblock %}
 
 {% block right_side %}
-
+<h1>{{ listing.address }} </h1>
+<ul>
+<li>Price = ${{ listing.price }}</li>
+<li>Area = {{ listing.area }}sq.ft.</li>
+<li>Bedrooms = {{ listing.bedrooms }}</li>
+<li>Bathrooms = {{ listing.bathrooms }}</li>
+<li>Listed on = {{ moment(listing.timestamp).fromNow() }}</li>
+<li>Realtor = {{ listing.realtor }}</li>
+<li>School District = {{ listing.school_district }}</li>
+</ul>
 {% endblock %}
 
 {% block scripts %}

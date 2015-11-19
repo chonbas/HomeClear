@@ -6,7 +6,7 @@ from wtforms import ValidationError
 from ..models import User
 
 class SearchForm(Form):
-    search = StringField('',default='Search', validators=[Required(), Length(1,64)])
+    search = StringField('',default='Search', validators=[Length(1,64)])
 
 class FilterForm(Form):
     rooms = IntegerField('Bedrooms:')

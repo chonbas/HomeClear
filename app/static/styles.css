@@ -12,3 +12,8 @@
 .row.vertical-divider div[class^="col-"]:last-child {
   border-right: none;
 }
+
+#map{
+  height:800px;
+  width:auto;
+}
