@@ -21,7 +21,7 @@ def login():
             login_user(user, form.remember_me.data)
             return redirect(request.args.get('next') or url_for('main.index'))
         flash('Invalid username or password.')
-    return render_template('auth/login.html', form=form)
+    return render_template('auth/login.html', form=form, searchbar=False)
 
 @auth.route('/logout')
 @login_required
@@ -41,7 +41,7 @@ def register():
         db.session.commit()
         flash('Successfully registered.')
         return redirect(url_for('auth.login'))
-    return render_template('auth/register.html', form=form)
+    return render_template('auth/register.html', form=form, searchbar=False)
 
 @auth.route('/change-password', methods=['GET', 'POST'])
 @login_required
@@ -55,4 +55,4 @@ def change_password():
             return redirect(url_for('main.index'))
         else:
             flash('Invalid password.')
-    return render_template("auth/change_password.html", form=form)
+    return render_template("auth/change_password.html", form=form, searchbar=False)

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}HomeClear{% endblock %}
+
+{% block page_content %}
+<div class="container">
+  <div class="row vertical-divider">
+    <div class="col-md-8">
+      {% block left_side %}
+
+      {% endblock %}
+
+    </div>
+
+    <div class="col-md-4">
+      {% block right_side %}
+
+      {% endblock %}
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+{% endblock %}

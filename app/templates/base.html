@@ -40,7 +40,14 @@
                     <li id="lefty"><a href="{{ url_for('auth.login') }}">Login</a></li>
                     <li id="lefty"><a href="{{ url_for('auth.register') }}">Register</a></li>
                 {% endif %}
-
+              </li>
+              {% if searchbar %}
+              <form class="navbar-form navbar-right">
+                <div class="form-group">
+                  <li id="lefty">{{ wtf.quick_form(g.search) }}</li>
+                </div>
+              </form>
+              {% endif %}
             </ul>
         </div>
     </div>

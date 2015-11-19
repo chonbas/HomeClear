@@ -34,8 +34,10 @@ class User(UserMixin, db.Model):
 def load_user(user_id):
     return User.query.get(int(user_id))
 
-#TABLE FOR FAVORITING REFERENCES
+#TABLE FOR FAVORITING REFERENCES goes here
 
+
+#table for many to many school to home relationship
 schools_homes = db.Table('schools_homes',
         db.Column('school_id', db.Integer, db.ForeignKey('schools.id'), nullable=False),
         db.Column('listing_id', db.Integer, db.ForeignKey('listings.id'), nullable=False),
@@ -53,7 +55,7 @@ class Listing(db.Model):
     bedrooms = db.Column(db.Integer)
     bathrooms = db.Column(db.Integer)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    seller = db.Column(db.String(64))
+    realtor = db.Column(db.String(64))
     images = db.relationship('Image', backref='listing', lazy='dynamic') #tie images to specific listings
     tax_info = db.relationship('Tax', backref='listing', lazy='dynamic')
     crime_info = db.relationship('Crime', backref='listing', lazy='dynamic')
@@ -78,7 +80,7 @@ class Tax(db.Model):
     __tablename__ = 'taxes'
 
     id = db.Column(db.Integer, primary_key=True)
-    rate = db.Column(db.Integer)
+    rate = db.Column(db.Float)
     graph = db.Column(db.String(128)) #path to graph
     listing_id = db.Column(db.Integer, db.ForeignKey('listings.id'))
 
@@ -98,9 +100,19 @@ class Crime(db.Model):
     __tablename__ = 'crimes'
 
     id = db.Column(db.Integer, primary_key=True)
-    rate = db.Column(db.Integer)
+    rate = db.Column(db.Float)
+    most_frequent_crime = db.Column(db.String(64))
+
     graph = db.Column(db.String(128)) #path to graph
     listing_id = db.Column(db.Integer, db.ForeignKey('listings.id'))
 
     def __repr__(self):
         return '(rate = {0} graph = {1}'.format(self.rate, self.graph)
+
+class Geo(db.Model):
+    __tablename__ = 'geos'
+
+    id = db.Column(db.Integer, primary_key=True)
+    most_frequent_incident = db.Column(db.String(64))
+    most_recent_incident = db.Column(db.String(64))
+    
