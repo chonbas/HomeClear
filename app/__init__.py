@@ -11,6 +11,7 @@ from config import config
 db = SQLAlchemy()
 bootstrap = Bootstrap()
 moment = Moment()
+bootstrap = Bootstrap()
 
 login_manager = LoginManager()
 login_manager.session_protection = 'strong'
@@ -24,7 +25,8 @@ def create_app(config_name):
     login_manager.init_app(app)
     db.init_app(app)
     moment.init_app(app)
-
+    bootstrap.init_app(app)
+    
     #prevent circular imports
 
     from .main import main as main_blueprint

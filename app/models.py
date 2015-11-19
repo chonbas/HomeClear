@@ -1,8 +1,6 @@
 from datetime import datetime
 import hashlib, sys
 from werkzeug.security import generate_password_hash, check_password_hash
-from markdown import markdown
-import bleach
 from flask import current_app, request, url_for
 from flask.ext.login import UserMixin, AnonymousUserMixin
 from . import db, login_manager, Whoosh
@@ -31,17 +29,10 @@ class User(UserMixin, db.Model):
     def verify_password(self, password):
         return check_password_hash(self.password_hash, password)
 
-    def is_adminitrator(self):
-        return self.admin
-
-class AnonymousUser(AnonymousUserMixin):
-
-
-login_manager.anonymous_user = AnonymousUser
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.quer.get(int(user_id))
+    return User.query.get(int(user_id))
 
 #TABLE FOR FAVORITING REFERENCES
 
