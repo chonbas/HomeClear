@@ -3,12 +3,8 @@
 {% block title %}HomeClear - Report{% endblock %}
 {% block head %}
   {{ super() }}
-  {{map.js}}
 {% endblock %}
 {% block map_side %}
-
-  {{map.html}}
-
 {% endblock %}
 
 {% block right_side %}
@@ -16,7 +12,7 @@
     <div class="thumbnail">
       <img src={{ url_for('static', filename='images') + imgPth.path + "1.jpg" }} alt={{ url_for('static', filename='images') + imgPth.path + "1.jpeg" }}>
       <div class="caption">
-        <h3>{{ listing.address }}</h3>
+        <h3 id="address">{{ listing.address }}</h3>
       </div>
     </div>
     <div class="btn-toolbar" role="toolbar" aria-label="...">
@@ -53,5 +49,4 @@
 
 <script type="text/javascript" src="{{url_for('static', filename='reportScripts.js')}}"></script>
 <script type="text/javascript" src="{{url_for('static', filename='graphs.js')}}"></script>
-
 {% endblock %}

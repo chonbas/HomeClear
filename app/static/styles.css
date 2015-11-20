@@ -18,3 +18,12 @@
   height:800px;
   width:auto;
 }
+
+span.search-bar{
+  float:left;
+  padding-top:10px;
+  padding-left:10px;
+  padding-bottom: 0px;
+  margin-top:-20px;
+  margin-bottom: -20px;
+}

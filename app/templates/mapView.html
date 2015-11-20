@@ -6,11 +6,10 @@
 <div class="container">
   <div class="row vertical-divider">
     <div class="col-md-8">
-      <div id=map>
+      <div id=map></div>
       {% block map_side %}
 
       {% endblock %}
-      </div>
     </div>
     <div class="col-md-4">
       {% block right_side %}
@@ -23,4 +22,7 @@
 
 {% block scripts %}
 {{ super() }}
+<script type="text/javascript" src="{{url_for('static', filename='maps.js')}}"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBKbLsDaThcgwIzJnk6b7auex7zaWizfGc&signed_in=true&callback=initMap"
+        async defer></script>
 {% endblock %}

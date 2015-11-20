@@ -4,7 +4,6 @@ from flask.ext.bootstrap import Bootstrap
 from flask.ext.moment import Moment
 from flask.ext.login import LoginManager
 from flask.ext.sqlalchemy import SQLAlchemy
-from flask.ext.googlemaps import GoogleMaps
 import flask.ext.whooshalchemy as Whoosh
 from config import config
 
@@ -28,7 +27,6 @@ def create_app(config_name):
     db.init_app(app)
     moment.init_app(app)
     bootstrap.init_app(app)
-    GoogleMaps(app)
 
     #prevent circular imports
 
