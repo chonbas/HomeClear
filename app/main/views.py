@@ -40,7 +40,7 @@ def report(address):
     tax_info = listing.tax_info.first()
     crime_info = listing.crime_info.first()
     geo_info = listing.geo_info.first()
-    schools = listing.schools
+    schools = listing.schools.first()
     return render_template('report.html', listing=listing, searchbar=True,
                             map=gmap, tax_info=tax_info, crime_info=crime_info,
                             geo_info=geo_info, schools=schools)

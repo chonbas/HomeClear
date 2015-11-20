@@ -126,15 +126,13 @@ def generateListing(query):
                   school_district = getSchoolDis(hashed));
     db.session.add(lis)
     tax = Tax(rate=getTaxRate(hashed), listing=lis)
-    elemSchool = School(name=getElemSchool(hashed), listing=lis)
-    highSchool = School(name=getHighSchool(hashed), listing=lis)
+    schools = School(elementarySchool=getElemSchool(hashed), highSchool=getHighSchool(hashed), listing=lis)
     crim = Crime(rate=getCrimeRate(hashed), most_frequent_crime=getFrequentCrime(hashed),
                 listing=lis)
     geo = Geo(most_frequent_incident=getGeoIncident(hashed), most_recent_incident=getDate(hashed),
             listing=lis)
     db.session.add(tax)
-    db.session.add(elemSchool)
-    db.session.add(highSchool)
+    db.session.add(schools)
     db.session.add(crim)
     db.session.add(geo)
     db.session.commit()

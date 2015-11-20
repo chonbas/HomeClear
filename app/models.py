@@ -57,7 +57,7 @@ class Listing(db.Model):
     schools = db.relationship('School', backref='listing', lazy='dynamic')
 
     def __repr__(self):
-        return '{0}(address={1})'.format(self.__class__.__name__, self.address)
+        return '{0}(address={1}area={2}schools={3})'.format(self.__class__.__name__, self.address, self.area, self.schools )
 
 class Image(db.Model):
     __tablename__ = 'images'
@@ -85,11 +85,12 @@ class School(db.Model):
     __tablename__ = 'schools'
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(64))
+    elementarySchool = db.Column(db.String(64))
+    highSchool = db.Column(db.String(64))
     listing_id = db.Column(db.Integer, db.ForeignKey('listings.id'))
 
     def __repr__(self):
-        return '(%s)' %self.name
+        return 'elem = {0} high = {1}'.format(self.elementarySchool, self.highSchool)
 
 class Crime(db.Model):
     __tablename__ = 'crimes'

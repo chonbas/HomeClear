@@ -1,0 +1,10 @@
+<ul class="list-group">
+<li class="list-group-item" id="houseinfo-heading"><h3>Basic Information</h3></li>
+<li class="list-group-item">Listed price {{ listing.price }}</li>
+<li class="list-group-item">{{ listing.area }}sq.ft.</li>
+<li class="list-group-item">{{ listing.bedrooms }} Bedrooms, {{ listing.bathrooms }} Bathrooms</li>
+<li class="list-group-item">Realtor: {{ listing.realtor }}</li>
+<li class="list-group-item">Listed {{ moment(listing.timestamp).fromNow() }}</li>
+<li class="list-group-item">Tax rate: {{ tax_info.rate }}</li>
+<li class="list-group-item">TAX_GRAPH_HERE</li>
+</ul>

@@ -29,24 +29,21 @@
     </div>
   </div>
     <div class="reportTabs" id="basicInfo">
-    <ul class="list-group">
-    <li class="list-group-item" id="houseinfo-heading"><h3>Basic Information</h3></li>
-    <li class="list-group-item">Listed price {{ listing.price }}</li>
-    <li class="list-group-item">Tax rate: {{ tax_info.rate }}%</li>
-    <li class="list-group-item">{{ listing.area }}sq.ft.</li>
-    <li class="list-group-item">{{ listing.bedrooms }} Bedrooms, {{ listing.bathrooms }} Bathrooms</li>
-    <li class="list-group-item">Realtor: {{ listing.realtor }}</li>
-    <li class="list-group-item">Listed {{ moment(listing.timestamp).fromNow() }}</li>
-    </ul>
+      {% include '_basic.html' %}
     </div>
     <div class="reportTabs" id="schoolInfo">
-    <ul class="list-group">
-    <li class="list-group-item" id="houseinfo-heading"><h3>School Information</h3></li>
-    <li class="list-group-item">{{ listing.bedrooms }} Bedrooms, {{ listing.bathrooms }} Bathrooms</li>
-    <li class="list-group-item">Realtor: {{ listing.realtor }}</li>
-    <li class="list-group-item">Listed {{ moment(listing.timestamp).fromNow() }}</li>
-    </ul>
+      {% include '_school.html' %}
     </div>
+    <div class="reportTabs" id="crimeInfo">
+      {% include '_crime.html' %}
+    </div>
+    <div class="reportTabs" id="geoInfo">
+      {% include '_geo.html' %}
+    </div>
+    <div class="reportTabs" id="miscInfo">
+      {% include '_misc.html' %}
+    </div>
+
 
 </div>
 {% endblock %}
@@ -54,17 +51,6 @@
 {% block scripts %}
 {{ super() }}
 
-<script>
-$(document).ready(function(){
-  $(".reportTabs").hide();
-  $("#basicInfo").show();
-
-  $("#schoolInfoBtn").click(function(){
-    $("#basicInfo").hide();
-    $("#schoolInfo").show();
-  });
-
-});
-</script>
+<script src="{{url_for('static', filename='reportScripts.js')}}"></script>
 
 {% endblock %}
