@@ -6,5 +6,5 @@
 <li class="list-group-item">Realtor: {{ listing.realtor }}</li>
 <li class="list-group-item">Listed {{ moment(listing.timestamp).fromNow() }}</li>
 <li class="list-group-item">Tax rate: {{ tax_info.rate }}%</li>
-<li class="list-group-item">TAX_GRAPH_HERE</li>
+<li class="list-group-item"><div id="tax_chart_div"></div></li>
 </ul>
