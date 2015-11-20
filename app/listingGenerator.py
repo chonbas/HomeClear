@@ -1,6 +1,6 @@
 from . import db
 from .models import Listing, Tax, Image, School, Crime, Geo
-import hashlib, locale
+import hashlib, locale, random
 
 taxRates =   [5.1, 6.2, 7.8, 9.8, 4.8, 3.4, 7.1, 5.0, 9.1, 3.8]
 
@@ -113,6 +113,11 @@ def getSchoolDis(s):
 def getDate(s):
     return dates[s % len(dates)]
 
+def getHouseImage(s):
+    random.seed(s)
+    houseIndex = random.randint(1,8)
+    return '/houses/' + str(houseIndex) +'/'
+
 def generateListing(query):
     lis = Listing.query.filter_by(address=query).first()
     if lis:
@@ -131,6 +136,8 @@ def generateListing(query):
                 listing=lis)
     geo = Geo(most_frequent_incident=getGeoIncident(hashed), most_recent_incident=getDate(hashed),
             listing=lis)
+    img = Image(path=getHouseImage(hashed), listing=lis)
+    db.session.add(img)
     db.session.add(tax)
     db.session.add(schools)
     db.session.add(crim)

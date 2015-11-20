@@ -63,7 +63,7 @@ class Image(db.Model):
     __tablename__ = 'images'
 
     id = db.Column(db.Integer, primary_key=True)
-    path = db.Column(db.String(128), unique=True)
+    path = db.Column(db.String(64))
     listing_id = db.Column(db.Integer, db.ForeignKey('listings.id'))
 
     def __repr__(self):

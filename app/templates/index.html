@@ -9,24 +9,51 @@
   <div class="col-md-4">
       <h1 style="text-align:center">HomeClear</h1>
       {{ wtf.quick_form(search) }}
-      <div class="col-md-4"></div>
-      <div class="col-md-4">
-        <ul class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-           Filters<b class="caret"></b>
+      <br>
+      <p style="text-align:center">
+        <a href="#" class="dropdown-toggle" id="showFilters" data-toggle="dropdown">
+           Show Filters<b class="caret"></b>
         </a>
-        <ul class="dropdown-menu">
-            {{ wtf.quick_form(filters) }}
-        </ul>
-      </ul>
-      </div>
-      <div class="col-md-4"></div>
+        <a href="#" class="dropdown-toggle" id="hideFilters" data-toggle="dropdown">
+           Hide Filters<b class="caret"></b>
+        </a>
+      </p>
+  </div>
+  <div class="col-md-4"></div>
+  <div class="col-md-4"></div>
+</div>
+<div clas="row">
+  <div class="col-md-4"></div>
+  <div class="col-md-4">
+  <div id="filtersForm">
+      {{ wtf.quick_form(filters) }}
+  </div>
   </div>
   <div class="col-md-4"></div>
 </div>
 </div>
+
 {% endblock %}
 
 {% block scripts %}
 {{ super() }}
+<script>
+$(document).ready(function(){
+  $("#filtersForm").hide();
+  $("#hideFilters").hide();
+
+  $("#showFilters").click(function(){
+    $("#filtersForm").show();
+    $("#showFilters").hide();
+    $("#hideFilters").show();
+  });
+
+  $("#hideFilters").click(function(){
+    $("#filtersForm").hide();
+    $("#hideFilters").hide();
+    $("#showFilters").show();
+  });
+
+});
+</script>
 {% endblock %}
