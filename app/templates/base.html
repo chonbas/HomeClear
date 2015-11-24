@@ -65,9 +65,12 @@
 
     {% block page_content %}{% endblock %}
 </div>
-<div class="container">
-  <p class="copyright">&copy; 2015 HomeClear</p>
-</div>
+{% endblock %}
+
+{% block footer %}
+<footer>
+    <p id="copyrightNotice">&copy; 2015 HomeClear</p>
+</footer>
 {% endblock %}
 
 {% block scripts %}

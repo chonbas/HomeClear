@@ -41,7 +41,11 @@ class Listing(db.Model):
     __tablename__ = 'listings'
 
     id = db.Column(db.Integer, primary_key=True)
-    address = db.Column(db.String(128), unique=True)
+    raw_add = db.Column(db.String(128), unique=True)
+    street_address = db.Column(db.String(128))
+    city = db.Column(db.String(64))
+    state = db.Column(db.String(32))
+    zipcode = db.Column(db.String(16))
     price = db.Column(db.String(32))
     area = db.Column(db.Integer)
     bedrooms = db.Column(db.Integer)

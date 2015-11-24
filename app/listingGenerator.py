@@ -1,14 +1,14 @@
 from . import db
 from .models import Listing, Tax, Image, School, Crime, Geo
-import hashlib, locale, random
+import hashlib, locale, random, usaddress
 
 taxRates =   [5.1, 6.2, 7.8, 9.8, 4.8, 3.4, 7.1, 5.0, 9.1, 3.8]
 
 crimeRates = [1.2, 3.5, 4.6, 9.5, 10.5, 19.8, 7.6, 5.0, 4.2, 31.3]
 
 elementarySchools = ['Eastside Institute', 'Greenfield Academy', 'South Fork Academy',
-                    'Faith Elementary', 'Seal Gulch School', 'Diamond Middle School',
-                    'Riverview Middle School', 'Fortuna Academy', 'Sierra Grammar School',
+                    'Faith Elementary', 'Seal Gulch School', 'Diamond Elementary School',
+                    'Riverview Elementary School', 'Fortuna Academy', 'Sierra Grammar School',
                     'Seaside Elementary']
 
 highSchools = ['Ravenwood High School','Vista High School', 'Mammoth High', 'White Mountain High',
@@ -79,7 +79,7 @@ def getRm(s):
 def getPrice(s):
     area = getArea(s)
     rms = getRm(s)
-    intPrice =  (area * rms * rms * 50)
+    intPrice =  (area * rms * rms * 150)
     locale.setlocale( locale.LC_ALL, '' )
     return locale.currency( intPrice, grouping=True )
 
@@ -119,17 +119,29 @@ def getHouseImage(s):
     return '/houses/' + str(houseIndex) +'/'
 
 def generateListing(query):
-    lis = Listing.query.filter_by(address=query).first()
+    lis = Listing.query.filter_by(raw_add=query).first()
     if lis:
         return lis
-
-    s = ''.join(query.split())
-    hashed = getHash(s)
-    lis = Listing(address = query, area = getArea(hashed),price = getPrice(hashed),
+    #not currently in db, note not robust
+    parsed = usaddress.tag(query)
+    add_Dict = parsed[0]
+    state = city = zipcode = "Unknown"
+    if 'StateName' in add_Dict:
+        state = add_Dict['StateName']
+    if 'PlaceName' in add_Dict:
+        city = add_Dict['PlaceName']
+    if 'ZipCode' in add_Dict:
+        zipcode = add_Dict['ZipCode']
+    street_address = add_Dict['AddressNumber']+' '+add_Dict['StreetName']+' '+add_Dict['StreetNamePostType']
+    hashed = getHash(query)
+    lis = Listing(raw_add = query, street_address = street_address,
+                  state=state, city=city, zipcode=zipcode,
+                  area = getArea(hashed),price = getPrice(hashed),
                   bedrooms = getRm(hashed), bathrooms = (getRm(hashed) - 1),
                   realtor = getRealtor(hashed), seller = getSeller(hashed),
                   school_district = getSchoolDis(hashed));
     db.session.add(lis)
+    #populate tabs
     tax = Tax(rate=getTaxRate(hashed), listing=lis)
     schools = School(elementarySchool=getElemSchool(hashed), highSchool=getHighSchool(hashed), listing=lis)
     crim = Crime(rate=getCrimeRate(hashed), most_frequent_crime=getFrequentCrime(hashed),

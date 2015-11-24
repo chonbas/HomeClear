@@ -15,10 +15,13 @@
 }
 
 #map{
-  height:800px;
+  height:80vh;
   width:auto;
 }
 
+#reportPageTabs button{
+  width:20%;
+}
 span.search-bar{
   float:left;
   padding-top:10px;

@@ -7,6 +7,7 @@ from .forms import SearchForm, FilterForm
 from .. import db, moment
 from ..models import User, Listing, Tax, School, Geo, Crime, School
 from ..listingGenerator import generateListing
+import usaddress
 
 @main.before_app_request
 def before_request():
@@ -16,12 +17,18 @@ def before_request():
 def search():
     if g.search.validate_on_submit():
         return redirect(url_for('.report', address=g.search.search.data))
+
 @main.route('/', methods=['GET', 'POST'])
 def index():
     search = SearchForm()
     filters = FilterForm()
     if search.validate_on_submit():
-        return redirect(url_for('.report', address=search.search.data))
+        query = search.search.data
+        parsed = usaddress.tag(query) # returns tuple with parsed string and 'street address' or 'ambiguous'
+        if parsed[1] == 'Street Address':
+            return redirect(url_for('.report', address=query))
+        else:
+            return redirect(url_for('.listings', address=query))
     return render_template('index.html', search=search, filters=filters, searchbar=False)
 
 
@@ -37,3 +44,8 @@ def report(address):
     return render_template('report.html', address=address,listing=listing, searchbar=True,
                             tax_info=tax_info, crime_info=crime_info,
                             geo_info=geo_info, schools=schools, imgPth=imagePth)
+
+@main.route('/listings/<address>', methods=['GET', 'POST'])
+def listings(address):
+    filters = FilterForm()
+    return render_template('index.html', search=g.search, filters=filters, searchbar=True)

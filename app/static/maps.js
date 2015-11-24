@@ -5,8 +5,8 @@ function initMap() {
   });
 
     var geocoder = new google.maps.Geocoder();
-  var address = document.getElementById('address').innerHTML;
-  geocoder.geocode({'address': address}, function(results, status) {
+    var address = document.getElementById('address').innerHTML;
+    geocoder.geocode({'address': address}, function(results, status) {
     if (status === google.maps.GeocoderStatus.OK) {
       map.setCenter(results[0].geometry.location);
       var marker = new google.maps.Marker({
@@ -18,7 +18,3 @@ function initMap() {
     }
   });
 }
-
-$(document).ready(function(){
-
-});
