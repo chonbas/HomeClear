@@ -14,19 +14,25 @@
   border-left: none;
 }
 
+
 #map{
   height:80vh;
   width:auto;
 }
 
-#reportPageTabs button{
-  width:20%;
+#reportPageBtns button{
+  padding: 8px;
 }
 span.search-bar{
   float:left;
   padding-top:10px;
-  padding-left:10px;
+  padding-left:60px;
   padding-bottom: 0px;
   margin-top:-20px;
   margin-bottom: -20px;
+}
+
+#mapViewRightSide {
+  height:80vh;
+  overflow:scroll;
 }

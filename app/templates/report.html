@@ -9,15 +9,15 @@
         <h3 id="address">{{ listing.raw_add }}</h3>
       </div>
     </div>
-    <div class="btn-toolbar" role="toolbar" aria-label="...">
-    <div class="btn-group" role="group" id="reportPageTabs" aria-label="...">
+
+    <div class="btn-group" role="group" id="reportPageBtns" aria-label="...">
       <button type="button" class="btn btn-default" id="basicInfoBtn"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> Basic</button>
       <button type="button" class="btn btn-default" id="schoolInfoBtn"><span class="glyphicon glyphicon-education" aria-hidden="true"></span> School</button>
       <button type="button" class="btn btn-default" id="crimeInfoBtn"><span class="glyphicon glyphicon-alert" aria-hidden="true"></span> Crime</button>
       <button type="button" class="btn btn-default" id="geoInfoBtn"><span class="glyphicon glyphicon-fire" aria-hidden="true"></span> Geo</button>
       <button type="button" class="btn btn-default" id="miscInfoBtn"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Misc</button>
     </div>
-  </div>
+
     <div class="reportTabs" id="basicInfo">
       {% include '_basic.html' %}
     </div>
