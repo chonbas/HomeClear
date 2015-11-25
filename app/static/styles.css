@@ -20,7 +20,7 @@
   width:auto;
 }
 
-#reportPageBtns button{
+#reportPageBtns a{
   padding: 8px;
 }
 span.search-bar{
