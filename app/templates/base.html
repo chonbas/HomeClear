@@ -42,7 +42,7 @@
                     <li id="lefty"><a href="{{ url_for('auth.register') }}">Register</a></li>
                 {% endif %}
               {% if searchbar %}
-                <li><span class="search-bar"> {{ wtf.quick_form(g.search) }}</span></li>
+                <li><span class="search-bar"> {{ wtf.quick_form(g.search, action=url_for('main.search', address=g.search.search.data), method="post") }}</span></li>
                 <li><a href="#" class="dropdown-toggle" id="showFilters" data-toggle="dropdown">
                  Show Filters<b class="caret"></b>
               </a></li>
