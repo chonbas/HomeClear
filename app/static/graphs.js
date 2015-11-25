@@ -47,7 +47,7 @@
           title: 'Year'
         },
         vAxis: {
-          title: 'Property Taxe Rate'
+          title: 'Property Tax Rate'
         }
 
       };

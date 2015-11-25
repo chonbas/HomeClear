@@ -132,7 +132,15 @@ def generateListing(query):
         city = add_Dict['PlaceName']
     if 'ZipCode' in add_Dict:
         zipcode = add_Dict['ZipCode']
-    street_address = add_Dict['AddressNumber']+' '+add_Dict['StreetName']+' '+add_Dict['StreetNamePostType']
+    street_address = ""
+    if 'AddressNumber' in add_Dict:
+        street_address+=add_Dict['AddressNumber']
+    if 'StreetName' in add_Dict:
+        street_address+=' '
+        street_address+=add_Dict['StreetName']
+    if 'StreetNamePostType' in add_Dict:
+        street_address+=' '
+        street_address+=add_Dict['StreetNamePostType']
     hashed = getHash(query)
     lis = Listing(raw_add = query, street_address = street_address,
                   state=state, city=city, zipcode=zipcode,

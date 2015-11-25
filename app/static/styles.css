@@ -1,28 +1,17 @@
-.row.vertical-divider {
-  overflow: hidden;
-}
-.row.vertical-divider > div[class^="col-"] {
-  text-align: center;
-  border-left: 3px solid #ddd;
-  border-right: 3px solid #ddd;
-}
-.row.vertical-divider div[class^="col-"]:first-child {
-  border-left: none;
-}
-.row.vertical-divider div[class^="col-"]:last-child {
-  border-right: none;
-  border-left: none;
-}
-
-
 #map{
   height:80vh;
   width:auto;
 }
 
-#reportPageBtns a{
-  padding: 8px;
+#mapViewRightSide {
+  height:80vh;
+  overflow-y:scroll;
 }
+
+#reportPageBtns a{
+  padding: 7px;
+}
+
 span.search-bar{
   float:left;
   padding-top:10px;
@@ -30,9 +19,4 @@ span.search-bar{
   padding-bottom: 0px;
   margin-top:-20px;
   margin-bottom: -20px;
-}
-
-#mapViewRightSide {
-  height:80vh;
-  overflow:scroll;
 }

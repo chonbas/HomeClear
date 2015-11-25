@@ -71,6 +71,11 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type=text/javascript> $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};</script>
+<script>
+$(document).ready(function(){
+  $("#search").attr("placeholder", "Enter an address or zipcode...");
+});
+</script>
 {{ super() }}
 {{ moment.include_moment() }}
 {% endblock %}
