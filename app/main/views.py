@@ -48,7 +48,11 @@ def report(address):
 def listings(address):
     return render_template('listings.html', search=g.search, searchbar=True)
 
-#Functoin to take a query and return either report or listings
+
+
+
+
+#Function to take a query and return either report or listings
 def searchParse(query):
     parsed = usaddress.tag(query) # returns tuple with parsed string and 'street address' or 'ambiguous'
     if parsed[1] == 'Street Address':
