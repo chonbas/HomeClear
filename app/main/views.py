@@ -12,7 +12,6 @@ import usaddress
 @main.before_app_request
 def before_request():
     g.search = SearchForm()
-    g.search.search(placeholder="Enter address or zipcode...")
 
 @main.route('/search', methods=['GET','POST'])
 def search():
@@ -23,7 +22,6 @@ def search():
 @main.route('/', methods=['GET', 'POST'])
 def index():
     search = SearchForm()
-    search.search(placeholder="Enter address or zipcode...")
     filters = FilterForm()
     if search.validate_on_submit():
         query = search.search.data

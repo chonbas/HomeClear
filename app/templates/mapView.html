@@ -23,6 +23,5 @@
 {% block scripts %}
 {{ super() }}
 <script type="text/javascript" src="{{url_for('static', filename='maps.js')}}"></script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBKbLsDaThcgwIzJnk6b7auex7zaWizfGc&signed_in=true&callback=initMap"
-        async defer></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBKbLsDaThcgwIzJnk6b7auex7zaWizfGc&signed_in=true&callback=initMap" async defer></script>
 {% endblock %}

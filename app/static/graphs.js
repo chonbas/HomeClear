@@ -53,4 +53,4 @@
       };
       var taxChart = new google.visualization.LineChart(document.getElementById('tax_chart_div'));
       taxChart.draw(taxData, options);
-    }
+    };
