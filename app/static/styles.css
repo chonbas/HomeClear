@@ -12,6 +12,10 @@
   padding: 7px;
 }
 
+#navLogo {
+  height:150%;
+  margin-top: -5px;
+}
 span.search-bar{
   float:left;
   padding-top:10px;

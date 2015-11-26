@@ -32,7 +32,6 @@ def index():
 @main.route('/report/<address>', methods=['GET', 'POST'])
 def report(address):
     listing = generateListing(address)
-    thumbNail = listing.images.first()
     tax_info = listing.tax_info.first()
     crime_info = listing.crime_info.first()
     geo_info = listing.geo_info.first()
@@ -44,7 +43,8 @@ def report(address):
 
 @main.route('/listings/<address>', methods=['GET', 'POST'])
 def listings(address):
-    return render_template('listings.html', search=g.search, searchbar=True)
+    listings = Listing.query.order_by(Listing.timestamp.desc())
+    return render_template('listings.html', search=g.search, searchbar=True, listings=listings)
 
 
 

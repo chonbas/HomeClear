@@ -3,9 +3,28 @@
 {% block title %}HomeClear - Listings{% endblock %}
 
 {% block right_side %}
-  {% include '_listings.html' %}
+  <ul class="list-group" id="listingsPanel">
+    {% for listing in listings %}
+    <li class="list-group-item listing">
+      <div class="row">
+        <div class="col-xs-6 col-md-6">
+          <a href={{url_for('main.report',address=listing.raw_add)}} class="thumbnail">
+            <img src={{ url_for('static', filename='images') + listing.images.first().path + "1.jpg" }} }}>
+          </a>
+        </div>
+        <h5 class="visLisAdd">{{ listing.street_address }}</h5>
+        <h6 class="listingAdd" hidden> {{listing.raw_add}}</h6>
+        {{ listing.price }} <br/>
+        {{ listing.area }} sq.ft<br/>
+        BedRms: {{listing.bedrooms}} BthRms: {{listing.bathrooms}}<br/>
+      </div>
+    {% endfor %}
+  </ul>
 {% endblock %}
 
 {% block scripts %}
 {{ super() }}
+
+<script type="text/javascript" src="{{url_for('static', filename='listingsmap.js')}}"></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBKbLsDaThcgwIzJnk6b7auex7zaWizfGc&signed_in=true&callback=initMap" async defer></script>
 {% endblock %}

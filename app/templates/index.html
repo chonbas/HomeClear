@@ -7,7 +7,7 @@
 <div class="row">
   <div class="col-md-4"></div>
   <div class="col-md-4">
-      <h1 style="text-align:center">HomeClear</h1>
+      <img class="img-responsive" src={{url_for('static', filename='logo.png')}}>
       {{ wtf.quick_form(search) }}
       <br>
       <p style="text-align:center">
@@ -41,7 +41,7 @@
 $(document).ready(function(){
   $("#filtersForm").hide();
   $("#hideFilters").hide();
-  
+
   $("#showFilters").click(function(){
     $("#filtersForm").show();
     $("#showFilters").hide();

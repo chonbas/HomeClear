@@ -9,7 +9,7 @@
         <h3 id="address">{{ listing.raw_add }}</h3>
       </div>
     </div>
-    
+
     <div class="reportTabs" id="basicInfo">
       {% include '_basic.html' %}
     </div>
@@ -29,6 +29,9 @@
 
 {% block scripts %}
 {{ super() }}
+
+<script type="text/javascript" src="{{url_for('static', filename='reportmap.js')}}"></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBKbLsDaThcgwIzJnk6b7auex7zaWizfGc&signed_in=true&callback=initMap" async defer></script>
 <script type="text/javascript" src="{{url_for('static', filename='reportScripts.js')}}"></script>
 <script type="text/javascript" src="{{url_for('static', filename='graphs.js')}}"></script>
 {% endblock %}
