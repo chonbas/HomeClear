@@ -31,7 +31,7 @@ def index():
 
 @main.route('/report/<address>', methods=['GET', 'POST'])
 def report(address):
-    listing = generateListing(address)
+    listing = Listing.query.filter_by(raw_add=address).first()
     tax_info = listing.tax_info.first()
     crime_info = listing.crime_info.first()
     geo_info = listing.geo_info.first()
@@ -43,8 +43,15 @@ def report(address):
 
 @main.route('/listings/<address>', methods=['GET', 'POST'])
 def listings(address):
-    listings = Listing.query.order_by(Listing.timestamp.desc())
-    return render_template('listings.html', search=g.search, searchbar=True, listings=listings)
+    parsed = usaddress.tag(address)[0]
+    listings =[]
+    if 'ZipCode' in parsed:
+        listings = Listing.query.filter_by(zipcode=parsed['ZipCode']).order_by(Listing.timestamp.desc())
+    elif 'PlaceName' and 'StateName' in parsed:
+        listings = Listing.query.filter_by(city=parsed['PlaceName'],state=parsed['StateName']).order_by(Listing.timestamp.desc())
+    else:
+        flash('Please enter a valid address including either a zipcode or city name and state.')
+    return render_template('listings.html', search=g.search, searchbar=True, listings=listings, count=listings.count())
 
 
 

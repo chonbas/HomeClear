@@ -1,17 +1,18 @@
 <ul class="nav nav-pills" id="reportPageBtns">
 <li role="presentation" class="active" id="basicInfoBtn"><a href="#"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> Basic</a></li>
+<li role="presentation" id="taxInfoBtn"><a href="#"><span class="glyphicon glyphicon-usd" aria-hidden="true"></span> Tax</a></li>
 <li role="presentation" id="schoolInfoBtn"><a href="#"><span class="glyphicon glyphicon-education" aria-hidden="true"></span> School</a></li>
 <li role="presentation" id="crimeInfoBtn"><a href="#"><span class="glyphicon glyphicon-alert" aria-hidden="true"></span> Crime</a></li>
 <li role="presentation" id="geoInfoBtn"><a href="#"><span class="glyphicon glyphicon-fire" aria-hidden="true"></span> Geo</a></li>
 <li role="presentation" id="miscInfoBtn"><a href="#"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Misc</a></li>
 </ul>
 <ul class="list-group">
-<li class="list-group-item" id="houseinfo-heading"><h3>Basic Information</h3></li>
-<li class="list-group-item">Listed price {{ listing.price }}</li>
-<li class="list-group-item">{{ listing.area }}sq.ft.</li>
-<li class="list-group-item">{{ listing.bedrooms }} Bedrooms, {{ listing.bathrooms }} Bathrooms</li>
-<li class="list-group-item">Realtor: {{ listing.realtor }}</li>
-<li class="list-group-item">Listed {{ moment(listing.timestamp).fromNow() }}</li>
-<li class="list-group-item">Tax rate: {{ tax_info.rate }}%</li>
-<li class="list-group-item"><div id="tax_chart_div"></div></li>
+  <li class="list-group-item"></li>
+  <li class="list-group-item">Listed price {{ listing.price }}</li>
+  <li class="list-group-item">Area: {{ listing.area }}sq.ft.</li>
+  <li class="list-group-item">Lot Area: {{ listing.lot_area }}sq.ft.</li>
+  <li class="list-group-item">{{ listing.bedrooms }} Bedrooms, {{ listing.bathrooms }} Bathrooms</li>
+  <li class="list-group-item">Built in {{ listing.built_in }}</li>
+  <li class="list-group-item">Realtor: {{ listing.realtor }}</li>
+  <li class="list-group-item">Listed {{ moment(listing.timestamp).fromNow() }}</li>
 </ul>
