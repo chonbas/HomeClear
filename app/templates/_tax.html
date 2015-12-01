@@ -9,10 +9,14 @@
 <ul class="list-group">
   <li class="list-group-item"></li>
   {% if tax_info.last_sold_date != "N/A" %}
-  <li class="list-group-item">Last sold on {{tax_info.last_sold_date}} for {{tax_info.last_sold_price}}</li>
+    <li class="list-group-item">Last sold on {{tax_info.last_sold_date}} for {{tax_info.last_sold_price}}</li>
   {% endif %}
-  <div id="taxData" hidden data-2014-tax="{{tax_info.property_tax_2014}}" data-2013-tax="{{tax_info.property_tax_2013}}" data-2012-tax="{{tax_info.property_tax_2012}}" data-2011-tax="{{tax_info.property_tax_2011}}" data-2010-tax="{{tax_info.property_tax_2010}}"></div>
-  <div id="taxAssessData" hidden data-2014-tax="{{tax_info.tax_assesment_2014}}" data-2013-tax="{{tax_info.tax_assesment_2013}}" data-2012-tax="{{tax_info.tax_assesment_2012}}" data-2011-tax="{{tax_info.tax_assesment_2011}}" data-2010-tax="{{tax_info.tax_assesment_2010}}"></div>
-  <li class="list-group-item"><div id="tax_chart_div"></div></li>
-  <li class="list-group-item"><div id="tax_table_div"></div></li>
+  {% if tax_info.property_tax_2014 == "N/A" %}
+    <li class="list-group-item">No current tax information available for this listing.</li>
+  {% else %}
+    <div id="taxData" hidden data-2014-tax="{{tax_info.property_tax_2014}}" data-2013-tax="{{tax_info.property_tax_2013}}" data-2012-tax="{{tax_info.property_tax_2012}}" data-2011-tax="{{tax_info.property_tax_2011}}" data-2010-tax="{{tax_info.property_tax_2010}}"></div>
+    <div id="taxAssessData" hidden data-2014-tax="{{tax_info.tax_assesment_2014}}" data-2013-tax="{{tax_info.tax_assesment_2013}}" data-2012-tax="{{tax_info.tax_assesment_2012}}" data-2011-tax="{{tax_info.tax_assesment_2011}}" data-2010-tax="{{tax_info.tax_assesment_2010}}"></div>
+    <li class="list-group-item"><div id="tax_table_div"></div></li>
+    <li class="list-group-item"><div id="tax_chart_div"></div></li>
+  {% endif %}
 </ul>

@@ -106,6 +106,7 @@ class School(db.Model):
     elementary_school = db.Column(db.String(64))
     middle_school = db.Column(db.String(64))
     high_school = db.Column(db.String(64))
+    university = db.Column(db.String(64))
     listing_id = db.Column(db.Integer, db.ForeignKey('listings.id'))
 
     def __repr__(self):
@@ -115,8 +116,9 @@ class Crime(db.Model):
     __tablename__ = 'crimes'
 
     id = db.Column(db.Integer, primary_key=True)
-    rate = db.Column(db.Float)
-    most_frequent_crime = db.Column(db.String(64))
+    violent_crime_rate = db.Column(db.Float)
+    property_crime_rate = db.Column(db.Float)
+    crime_per_mile = db.Column(db.Float)
     listing_id = db.Column(db.Integer, db.ForeignKey('listings.id'))
 
     def __repr__(self):
@@ -128,6 +130,9 @@ class Geo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     most_frequent_incident = db.Column(db.String(64))
     most_recent_incident = db.Column(db.String(64))
+    geo_distance = db.Column(db.String(64))
+    epicenter_lat = db.Column(db.Float)
+    epicenter_long = db.Column(db.Float)
     listing_id = db.Column(db.Integer, db.ForeignKey('listings.id'))
 
 
@@ -169,11 +174,39 @@ class Inject():
                         listing=newListing)
             imgPth = linToks[4] + "/" + linToks[0] + "/"
             images = Image(path=imgPth, listing=newListing)
-            school = School(school_district="Palo Alto SD", elementary_school="Ele",
-                            middle_school="mid", high_school="high", listing=newListing)
-            crime = Crime(rate=7.6, most_frequent_crime="criminals", listing=newListing)
-            geo = Geo(most_frequent_incident="earthquake", most_recent_incident="yested",
-                        listing=newListing)
+            zipCode = linToks[4]
+            elementary_school = middle_school = high_school=""
+            violent_crime_rate = 0.87
+            property_crime_rate = 22.45
+            crime_per_mile = 65
+            if zipCode == "94301":
+                elementary_school="Addison Elementary School"
+                middle_school="Jordan Middle School"
+                high_school="Palo Alto High School"
+            elif zipCode == "94303":
+                elementary_school="Duveneck Elementary School"
+                middle_school="Jordan Middle School"
+                high_school="Palo Alto High School"
+            elif zipCode == "94305":
+                elementary_school="Escondido Elementary School"
+                middle_school="J L Stanford Middle School"
+                high_school="Palo Alto High School"
+            elif zipCode == "94306":
+                elementary_school="Barron Park Elementary School"
+                middle_school="Terman Middle School"
+                high_school="Henry M. Gunn High School"
+
+            school = School(school_district="Palo Alto Unifed School District", elementary_school=elementary_school,
+                            middle_school=middle_school, high_school=high_school, university="Stanford University",listing=newListing)
+            crime = Crime(violent_crime_rate=violent_crime_rate, property_crime_rate=property_crime_rate,
+                    crime_per_mile=crime_per_mile,listing=newListing)
+            most_frequent_incident="Earthquakes"
+            most_recent_incident="11/22/2015 - 1.6 Magnitude Earthquake, 6km Depth, Near East Foothills, CA"
+            geo_distance = "33.2km from Palo Alto, CA"
+            epicenter_lat = 37.414
+            epicenter_long = -121.762
+            geo = Geo(most_frequent_incident=most_frequent_incident, most_recent_incident=most_recent_incident,
+                        geo_distance=geo_distance, epicenter_long=epicenter_long, epicenter_lat=epicenter_lat,listing=newListing)
             db.session.add(newListing)
             db.session.add(newTax)
             db.session.add(images)

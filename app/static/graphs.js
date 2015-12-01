@@ -7,16 +7,36 @@ google.setOnLoadCallback(drawChart);
 // draws it.
 function drawChart() {
     // Create the data table.
-    var data = google.visualization.arrayToDataTable([
-      ['Location', 'Crime Rate', { role: 'style' }],
-     ['Palo Alto', 22.45, '#3B596A'],            // RGB value
-     ['Mountain View', 22.12, '#427676'],            // English color name
-     ['Redwood City', 23.40, '#3F9A82'],
-     ['California', 26.58, '#A1CD73'],
-     ['National', 28.3, '#ECDB60'],
+    var violent_data = google.visualization.arrayToDataTable([
+      ['Location', 'Violent Crime Rate', { role: 'style' }],
+     ['Palo Alto', 0.87, '#3B596A'],            // RGB value
+     ['California', 4.02, '#A1CD73'],
+     ['National Median', 3.8, '#ECDB60'],
      ]);
     // Set chart options
-    var options = {
+    var vio_options = {
+        legend: 'none',
+        title: 'Violent Crime Rate Comparison',
+        chartArea: {width: '50%'},
+        hAxis: {
+          title: 'Incidents Per 1,000 Residents',
+          minValue: 0
+      }
+
+    };
+    // Instantiate and draw our chart, passing in some options.
+    var chart1 = new google.visualization.BarChart(document.getElementById('violent_crime_chart_div'));
+    chart1.draw(violent_data, vio_options);
+
+    // Create the data table.
+    var prop_data = google.visualization.arrayToDataTable([
+      ['Location', 'Violent Crime Rate', { role: 'style' }],
+     ['Palo Alto', 22.45, '#3B596A'],            // RGB value
+     ['California', 26.58, '#A1CD73'],
+     ['National Median', 27.3, '#ECDB60'],
+     ]);
+    // Set chart options
+    var prop_options = {
         legend: 'none',
         title: 'Property Crime Rate Comparison',
         chartArea: {width: '50%'},
@@ -25,13 +45,37 @@ function drawChart() {
           minValue: 0
       }
 
-  };
+    };
     // Instantiate and draw our chart, passing in some options.
-    var chart = new google.visualization.BarChart(document.getElementById('crime_chart_div'));
-    chart.draw(data, options);
+    var chart2 = new google.visualization.BarChart(document.getElementById('property_crime_chart_div'));
+    chart2.draw(prop_data, prop_options);
+
+
+    // Create the data table.
+    var mile_data = google.visualization.arrayToDataTable([
+      ['Location', 'Crimes Per Square Mile', { role: 'style' }],
+     ['Palo Alto', 65, '#3B596A'],            // RGB value
+     ['California', 89, '#A1CD73'],
+     ['National Median', 37.9, '#ECDB60'],
+     ]);
+    // Set chart options
+    var mile_options = {
+        legend: 'none',
+        title: 'Crimes Per Square Mile Comparison',
+        chartArea: {width: '50%'},
+        hAxis: {
+          minValue: 0
+      }
+
+    };
+    // Instantiate and draw our chart, passing in some options.
+    var chart3 = new google.visualization.BarChart(document.getElementById('mile_crime_chart_div'));
+    chart3.draw(mile_data, mile_options);
+
+
     var taxData = new google.visualization.DataTable();
   taxData.addColumn('number', 'X');
-  taxData.addColumn('number', 'Tax History');
+  taxData.addColumn('number', 'Tax Rate');
   taxData.addRows([
     [2010, parseInt(document.getElementById('taxData').getAttribute('data-2010-tax')) / parseInt(document.getElementById('taxAssessData').getAttribute('data-2010-tax'))],
     [2011, parseInt(document.getElementById('taxData').getAttribute('data-2011-tax')) / parseInt(document.getElementById('taxAssessData').getAttribute('data-2011-tax'))],
@@ -42,13 +86,11 @@ function drawChart() {
   var options = {
     legend: 'none',
     colors: ['#3B596A'],
+    title: 'Tax Rate Per Year',
+    chartArea:{width: '50%'},
     hAxis: {
       title: 'Year'
-    },
-    vAxis: {
-      title: 'Property Tax Rate'
     }
-
   };
   var taxChart = new google.visualization.LineChart(document.getElementById('tax_chart_div'));
   taxChart.draw(taxData, options);
@@ -71,7 +113,7 @@ function drawChart() {
   ]);
 
   var taxTable = new google.visualization.Table(document.getElementById('tax_table_div'));
-  taxTable.draw(taxTableData, {showRowNumber: false, width: '100%', height: '100%'});
+  taxTable.draw(taxTableData, {showRowNumber: false, width:'100%', height: '100%'});
 };
 
 $(window).resize(function(){
