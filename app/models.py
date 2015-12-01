@@ -206,7 +206,10 @@ class Inject():
                 elementary_school="Barron Park Elementary School"
                 middle_school="Terman Middle School"
                 high_school="Henry M. Gunn High School"
-
+            if (newListing.city == "East Palo Alto"):
+                violent_crime_rate = 12.08
+                property_crime_rate = 20.76
+                crime_per_mile = 384
             school = School(school_district="Palo Alto Unifed School District", elementary_school=elementary_school,
                             middle_school=middle_school, high_school=high_school, university="Stanford University",listing=newListing)
             crime = Crime(violent_crime_rate=violent_crime_rate, property_crime_rate=property_crime_rate,

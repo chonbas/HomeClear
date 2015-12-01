@@ -26,7 +26,7 @@
     <div class="reportTabs" id="schoolInfo">
       {% include '_school.html' %}
     </div>
-    <div class="reportTabs" id="crimeInfo">
+    <div class="reportTabs" id="crimeInfo" data-city="{{listing.city}}" data-violent-crime-rate={{crime_info.violent_crime_rate}} data-property-crime-rate={{crime_info.property_crime_rate}} data-crime-per-mile={{crime_info.crime_per_mile}}>
       {% include '_crime.html' %}
     </div>
     <div class="reportTabs" id="geoInfo">

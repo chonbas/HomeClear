@@ -95,12 +95,14 @@ def listings(address):
     parsed = usaddress.tag(address)[0]
     listings =[]
     if 'ZipCode' in parsed:
-        listings = Listing.query.filter_by(zipcode=parsed['ZipCode']).order_by(Listing.timestamp.desc())
+        listings = list(Listing.query.filter_by(zipcode=parsed['ZipCode']).order_by(Listing.timestamp.desc()))
     elif 'PlaceName' and 'StateName' in parsed:
-        listings = Listing.query.filter_by(city=parsed['PlaceName'],state=parsed['StateName']).order_by(Listing.timestamp.desc())
+        if 'StreetNamePreDirectional' and 'StreetName' in parsed:
+            parsed['PlaceName'] = parsed['StreetNamePreDirectional'] + " " + parsed['StreetName'] + " " + parsed['PlaceName']
+        listings = list(Listing.query.filter_by(city=parsed['PlaceName'],state=parsed['StateName']).order_by(Listing.timestamp.desc()))
     else:
         flash('Please enter a valid address including either a zipcode or city name and state.')
-    return render_template('listings.html', address=address,favs=False,search=g.search, searchbar=True, listings=listings, count=listings.count())
+    return render_template('listings.html', address=address,favs=False,search=g.search, searchbar=True, listings=listings, count=len(listings))
 
 #Function to take a query and return either report or listings
 def searchParse(query):

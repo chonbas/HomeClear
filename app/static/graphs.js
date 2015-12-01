@@ -9,7 +9,7 @@ function drawChart() {
     // Create the data table.
     var violent_data = google.visualization.arrayToDataTable([
       ['Location', 'Violent Crime Rate', { role: 'style' }],
-     ['Palo Alto', 0.87, '#3B596A'],            // RGB value
+     [document.getElementById('crimeInfo').getAttribute('data-city'), parseFloat(document.getElementById('crimeInfo').getAttribute('data-violent-crime-rate')), '#3B596A'],            // RGB value
      ['California', 4.02, '#A1CD73'],
      ['National Median', 3.8, '#ECDB60'],
      ]);
@@ -31,10 +31,11 @@ function drawChart() {
     // Create the data table.
     var prop_data = google.visualization.arrayToDataTable([
       ['Location', 'Violent Crime Rate', { role: 'style' }],
-     ['Palo Alto', 22.45, '#3B596A'],            // RGB value
+     [document.getElementById('crimeInfo').getAttribute('data-city'), parseFloat(document.getElementById('crimeInfo').getAttribute('data-property-crime-rate')), '#3B596A'],            // RGB value
      ['California', 26.58, '#A1CD73'],
      ['National Median', 27.3, '#ECDB60'],
      ]);
+     console.log(document.getElementById('crimeInfo').getAttribute('data-city'));
     // Set chart options
     var prop_options = {
         legend: 'none',
@@ -54,7 +55,7 @@ function drawChart() {
     // Create the data table.
     var mile_data = google.visualization.arrayToDataTable([
       ['Location', 'Crimes Per Square Mile', { role: 'style' }],
-     ['Palo Alto', 65, '#3B596A'],            // RGB value
+     [document.getElementById('crimeInfo').getAttribute('data-city'), parseFloat(document.getElementById('crimeInfo').getAttribute('data-crime-per-mile')), '#3B596A'],           // RGB value
      ['California', 89, '#A1CD73'],
      ['National Median', 37.9, '#ECDB60'],
      ]);
