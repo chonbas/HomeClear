@@ -54,8 +54,8 @@ class Listing(db.Model):
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     realtor = db.Column(db.String(64))
     built_in = db.Column(db.String(64))
-    # lat = db.Column(db.Float)
-    # longi = db.Column(db.Float)
+    lati = db.Column(db.Float)
+    longi = db.Column(db.Float)
     images = db.relationship('Image', backref='listing', lazy='dynamic') #tie images to specific listings
     tax_info = db.relationship('Tax', backref='listing', lazy='dynamic')
     crime_info = db.relationship('Crime', backref='listing', lazy='dynamic')
@@ -134,7 +134,7 @@ class Geo(db.Model):
 #solely for injecting data into db
 class Inject():
     def injectData(self):
-        import locale, urllib2
+        import locale, urllib2, json
         locale.setlocale( locale.LC_ALL, '' )
 
         f = open("app/data/listings.txt", 'r')
@@ -143,28 +143,32 @@ class Inject():
             toks = line.split(';')
             print(line)
             linToks = [s.strip() for s in toks]
+            linToks = [s.replace(',','') for s in linToks]
             raw_add = " ".join(linToks[1:5])
-            # uni_add = unicode(raw_add)
-            # url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + uni_add.encode('utf-8')
-            # response = urllib2.urlopen(url)
-            # jsongeocode = response.read().encode('utf-8')
-            # data = eval(jsongeocode)
-            # coordinates = data['results'][0]['geometry']['location']
-            # lati = coordinates['lat']
-            # longi = coordinates['lng']
+            add = urllib2.quote(raw_add)
+            geocode_url = "https://maps.googleapis.com/maps/api/geocode/json?address=%s&sensor=false&region=us" %add
+            req = urllib2.urlopen(geocode_url)
+            jsonResponse = json.loads(req.read())
+            coordinates = jsonResponse['results'][0]['geometry']['location']
+            lati = coordinates['lat']
+            longi = coordinates['lng']
+            last_sold_price = linToks[13]
+            if (last_sold_price != "N/A"):
+                last_sold_price = locale.currency( int(last_sold_price), grouping=True )
             newListing = Listing(raw_add = raw_add, street_address = linToks[1],
                             city = linToks[2], state=linToks[3],zipcode=linToks[4],
-                            price=linToks[9], area=linToks[5], lot_area=linToks[6],
+                            price=locale.currency( int(linToks[9]), grouping=True ), area=linToks[5], lot_area=linToks[6],
                             bedrooms=linToks[7], bathrooms=linToks[8], realtor=linToks[10],
-                            built_in=linToks[11])
-            newTax = Tax(last_sold_date=linToks[12],last_sold_price=linToks[13],
+                            built_in=linToks[11], lati=lati, longi=longi)
+            newTax = Tax(last_sold_date=linToks[12],last_sold_price=last_sold_price,
                         property_tax_2014=linToks[14], property_tax_2013=linToks[15],
                         property_tax_2012=linToks[16],property_tax_2011=linToks[17],
                         property_tax_2010=linToks[18], tax_assesment_2014=linToks[19],
                         tax_assesment_2013=linToks[20],tax_assesment_2012=linToks[21],
                         tax_assesment_2011=linToks[22], tax_assesment_2010=linToks[23],
                         listing=newListing)
-            images = Image(path=linToks[4]+"/"+linToks[0]+"/", listing=newListing)
+            imgPth = linToks[4] + "/" + linToks[0] + "/"
+            images = Image(path=imgPth, listing=newListing)
             school = School(school_district="Palo Alto SD", elementary_school="Ele",
                             middle_school="mid", high_school="high", listing=newListing)
             crime = Crime(rate=7.6, most_frequent_crime="criminals", listing=newListing)

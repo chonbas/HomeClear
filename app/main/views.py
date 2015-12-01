@@ -7,7 +7,7 @@ from .forms import SearchForm, FilterForm
 from .. import db, moment
 from ..models import User, Listing, Tax, School, Geo, Crime, School
 from ..listingGenerator import generateListing
-import usaddress
+import usaddress, urllib2, json
 
 @main.before_app_request
 def before_request():
@@ -31,7 +31,17 @@ def index():
 
 @main.route('/report/<address>', methods=['GET', 'POST'])
 def report(address):
-    listing = Listing.query.filter_by(raw_add=address).first()
+    add = urllib2.quote(address)
+    geocode_url = "https://maps.googleapis.com/maps/api/geocode/json?address=%s&sensor=false&region=us" %add
+    req = urllib2.urlopen(geocode_url)
+    jsonResponse = json.loads(req.read())
+    coordinates = jsonResponse['results'][0]['geometry']['location']
+    lati = coordinates['lat']
+    longi = coordinates['lng']
+    listing = Listing.query.filter_by(lati=lati, longi=longi).first()
+    if listing is None:
+        flash("Unable to find a listing matching this address.")
+        return redirect(url_for('.index'))
     tax_info = listing.tax_info.first()
     crime_info = listing.crime_info.first()
     geo_info = listing.geo_info.first()
@@ -52,10 +62,6 @@ def listings(address):
     else:
         flash('Please enter a valid address including either a zipcode or city name and state.')
     return render_template('listings.html', search=g.search, searchbar=True, listings=listings, count=listings.count())
-
-
-
-
 
 #Function to take a query and return either report or listings
 def searchParse(query):

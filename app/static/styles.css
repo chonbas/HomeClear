@@ -10,7 +10,7 @@
 }
 
 #reportPageBtns a{
-  padding: 3px;
+  padding: 8px;
 }
 
 #navLogo {
@@ -24,4 +24,10 @@ span.search-bar{
   padding-bottom: 0px;
   margin-top:-20px;
   margin-bottom: -20px;
+}
+#tax-chart-div{
+  width: auto;
+}
+#crime-chart-div{
+  width: auto;
 }

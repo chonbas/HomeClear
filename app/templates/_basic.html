@@ -10,7 +10,9 @@
   <li class="list-group-item"></li>
   <li class="list-group-item">Listed price {{ listing.price }}</li>
   <li class="list-group-item">Area: {{ listing.area }}sq.ft.</li>
+  {% if listing.lot_area != "N/A" %}
   <li class="list-group-item">Lot Area: {{ listing.lot_area }}sq.ft.</li>
+  {% endif %}
   <li class="list-group-item">{{ listing.bedrooms }} Bedrooms, {{ listing.bathrooms }} Bathrooms</li>
   <li class="list-group-item">Built in {{ listing.built_in }}</li>
   <li class="list-group-item">Realtor: {{ listing.realtor }}</li>

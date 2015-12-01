@@ -8,19 +8,16 @@ function initMap() {
     var count = 1;
     $('.listingInfo').each(function(i, obj) {
       var address = this.getAttribute("data-address");
-      geocoder.geocode({'address': address}, function(results, status) {
-      if (status === google.maps.GeocoderStatus.OK) {
-        map.setCenter(results[0].geometry.location);
-        var marker = new google.maps.Marker({
-          map: map,
-          label: ""+count,
-          position: results[0].geometry.location,
-        });
-      } else {
-        console.log('Geocode was not successful for the following reason: ' + status);
-      }
+      var lati = parseFloat(this.getAttribute("data-lat"));
+      var longi = parseFloat(this.getAttribute("data-lng"));
+      var pos = {'lat': lati, 'lng':longi};
+      map.setCenter(pos);
+      var marker = new google.maps.Marker({
+        map: map,
+        label: ""+count,
+        position: pos,
+      });
       count++;
+      console.log(count);
     });
-
-  });
 };
