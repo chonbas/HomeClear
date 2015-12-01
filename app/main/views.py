@@ -1,5 +1,5 @@
 from flask import render_template, redirect, url_for, abort, flash, request,\
-    current_app, make_response, g, jsonify
+    current_app, make_response, g, jsonify, session
 from flask.ext.login import login_required, current_user
 from flask.ext.sqlalchemy import get_debug_queries
 from . import main
@@ -9,7 +9,7 @@ from ..models import User, Listing, Tax, School, Geo, Crime, School
 from ..listingGenerator import generateListing
 import usaddress, urllib2, json
 
-@main.before_app_request
+@main.before_request
 def before_request():
     g.search = SearchForm()
 
@@ -22,6 +22,7 @@ def search():
 @main.route('/favorites/', methods=['GET', 'POST'])
 @login_required
 def favorites():
+    listings = current_user.favorites
     return render_template('listings.html', favs=True,listings=current_user.favorites, search=g.search, searchbar=True)
 
 @main.route('/favorite/<int:listing_id>', methods=['GET', 'POST'])
@@ -30,7 +31,7 @@ def favorite(listing_id):
     listing = Listing.query.get_or_404(listing_id)
     if listing is not None:
         current_user.favorites.append(listing)
-    return redirect(request.args.get('next') or request.referrer or url_for(default))
+    return redirect(request.args.get('next') or request.referrer or url_for('main.index'))
 
 @main.route('/unfavorite/<int:listing_id>', methods=['GET', 'POST'])
 @login_required
@@ -38,7 +39,7 @@ def unfavorite(listing_id):
     listing = Listing.query.get_or_404(listing_id)
     if listing is not None:
         current_user.favorites.remove(listing)
-    return redirect(request.args.get('next') or request.referrer or url_for(default))
+    return redirect(request.args.get('next') or request.referrer or url_for('main.index'))
 
 @main.route('/', methods=['GET', 'POST'])
 def index():
@@ -68,13 +69,9 @@ def report(address):
     geo_info = listing.geo_info.first()
     schools = listing.schools.first()
     imagePth = listing.images.first()
-    favorited = False
-    if current_user.is_authenticated:
-        if listing in current_user.favorites.all():
-            favorited = True
     return render_template('report.html', address=address,listing=listing, searchbar=True,
                             tax_info=tax_info, crime_info=crime_info,
-                            geo_info=geo_info, schools=schools, imgPth=imagePth, favorited=favorited)
+                            geo_info=geo_info, schools=schools, imgPth=imagePth)
 @main.route('/lots/<address>', methods=['GET','POST'])
 def lots(address):
     parsed = usaddress.tag(address)[0]

@@ -20,7 +20,9 @@
           {% else %}
               <a href={{ url_for('main.favorite', listing_id=listing.id)}}><span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span></a>
           {% endif %}
-        {% endif %}
+        {% else %}
+            <a href={{ url_for('main.favorite', listing_id=listing.id)}}><span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span></a>
+          {% endif %}
       </h4>
       <h5>{{listing.city}}, {{listing.state}}</h5>
         <div class="listingInfo" data-address="{{listing.raw_add}}" data-lat="{{listing.lati}}" data-lng="{{listing.longi}}"hidden></div>

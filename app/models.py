@@ -1,10 +1,9 @@
 from datetime import datetime
 import hashlib, sys
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask import current_app, redirect, flash, request, url_for
+from flask import current_app, redirect, flash, request, url_for, jsonify,g
 from flask.ext.login import UserMixin, AnonymousUserMixin
 from . import db, login_manager, Whoosh
-
 
 
 favorited_listings = db.Table('favorited_listings',
@@ -69,7 +68,24 @@ class Listing(db.Model):
     schools = db.relationship('School', backref='listing', lazy='dynamic')
 
     def __repr__(self):
-        return '{0}(address={1}area={2}schools={3})'.format(self.__class__.__name__, self.address, self.area, self.schools )
+        json_listing = {
+            'raw_add':self.raw_add,
+            'street_address': self.street_address,
+            'city':self.city,
+            'state':self.state,
+            'zipcode':self.zipcode,
+            'price':self.price,
+            'area':self.area,
+            'lot_area':self.area,
+            'bedrooms':self.bedrooms,
+            'bathrooms':self.bathrooms,
+            'timestamp':self.timestamp,
+            'realtor':self.realtor,
+            'built_in':self.built_in,
+            'lati':self.lati,
+            'longi':self.longi
+        }
+        return str(json_listing)
 
 class Image(db.Model):
     __tablename__ = 'images'

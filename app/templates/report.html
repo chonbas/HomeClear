@@ -8,11 +8,15 @@
       <div class="caption">
         <h3 id="address">{{ listing.raw_add }}</h3>
         <h4>
-        {% if favorited %}
-            <a href={{ url_for('main.unfavorite', listing_id=listing.id)}}><span class="glyphicon glyphicon-heart" aria-hidden="true"></span></a>
-        {% else %}
+          {% if current_user.is_authenticated %}
+            {% if listing in current_user.favorites.all() %}
+                <a href={{ url_for('main.unfavorite', listing_id=listing.id)}}><span class="glyphicon glyphicon-heart" aria-hidden="true"></span></a>
+            {% else %}
+                <a href={{ url_for('main.favorite', listing_id=listing.id)}}><span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span></a>
+            {% endif %}
+          {% else %}
             <a href={{ url_for('main.favorite', listing_id=listing.id)}}><span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span></a>
-        {% endif %}
+          {% endif %}
       </h4>
         <div id="coords" data-lat="{{listing.lati}}" data-lng="{{listing.longi}}"hidden></div>
     </div>

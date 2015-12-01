@@ -1,5 +1,5 @@
 #Import all required modules
-from flask import Flask
+from flask import Flask,g
 from flask.ext.bootstrap import Bootstrap
 from flask.ext.moment import Moment
 from flask.ext.login import LoginManager
