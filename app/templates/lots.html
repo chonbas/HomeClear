@@ -1,0 +1,38 @@
+{% extends "mapView.html" %}
+
+{% block title %}HomeClear - Listings{% endblock %}
+
+{% block right_side %}
+  <ul class="list-group" id="listingsPanel">
+    <h4> {% if favs %}Favorites{% else %}{{count}} search results<span style="float:right"><a href={{ url_for('main.listings', address=address) }}>View Listings</a></span>{% endif %}</h4>
+    {% for listing in listings %}
+    <li class="list-group-item listing">
+      <div class="row">
+        <div class="col-xs-6 col-md-6">
+          <a href={{url_for('main.report',address=listing.raw_add)}} class="thumbnail">
+            <img src={{ url_for('static', filename='images') + "/houses/" + listing.images.first().path + "1.jpg" }} }}>
+          </a>
+        </div>
+        <h4 class="visLisAdd">{{ listing.street_address }}
+        {% if current_user.is_authenticated %}
+          {% if listing in current_user.favorites.all() %}
+              <a href={{ url_for('main.unfavorite', listing_id=listing.id)}}><span class="glyphicon glyphicon-heart" aria-hidden="true"></span></a>
+          {% else %}
+              <a href={{ url_for('main.favorite', listing_id=listing.id)}}><span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span></a>
+          {% endif %}
+        {% endif %}
+      </h4>
+        <div class="listingInfo" data-address="{{listing.raw_add}}" data-lat="{{listing.lati}}" data-lng="{{listing.longi}}"hidden></div>
+        <h4>{{ listing.lot_area }} sq.ft</h4>
+        {{ listing.price }} <br/>
+      </div>
+    {% endfor %}
+  </ul>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+
+<script type="text/javascript" src="{{url_for('static', filename='listingsmap.js')}}"></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBKbLsDaThcgwIzJnk6b7auex7zaWizfGc&signed_in=true&callback=initMap" async defer></script>
+{% endblock %}

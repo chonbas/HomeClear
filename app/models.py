@@ -5,6 +5,14 @@ from flask import current_app, redirect, flash, request, url_for
 from flask.ext.login import UserMixin, AnonymousUserMixin
 from . import db, login_manager, Whoosh
 
+
+
+favorited_listings = db.Table('favorited_listings',
+        db.Column('user_id', db.Integer, db.ForeignKey('users.id'), nullable=False),
+        db.Column('listing_id', db.Integer, db.ForeignKey('listings.id'), nullable=False),
+        db.PrimaryKeyConstraint('listing_id', 'user_id')
+)
+
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
 
@@ -13,7 +21,8 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(64), unique=True, index=True)
     password_hash = db.Column(db.String(128))
     name = db.Column(db.String(64))
-    #favorites reference
+    favorites = db.relationship('Listing',secondary=favorited_listings,
+                                backref=db.backref('users',lazy='dynamic'), lazy='dynamic')
 
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
@@ -29,12 +38,9 @@ class User(UserMixin, db.Model):
     def verify_password(self, password):
         return check_password_hash(self.password_hash, password)
 
-
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
-
-#TABLE FOR FAVORITING REFERENCES goes here
 
 
 class Listing(db.Model):
@@ -70,10 +76,11 @@ class Image(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     path = db.Column(db.String(64))
+    img_count = db.Column(db.Integer)
     listing_id = db.Column(db.Integer, db.ForeignKey('listings.id'))
 
     def __repr__(self):
-        return '(%s)' %self.path
+        return '(%s, %d)' %(self.path,self.img_count)
 
 
 class Tax(db.Model):
@@ -95,8 +102,6 @@ class Tax(db.Model):
     tax_assesment_2010 = db.Column(db.Integer)
     listing_id = db.Column(db.Integer, db.ForeignKey('listings.id'))
 
-    def __repr__(self):
-        return '(rate = {0} graph = {1}'.format(self.rate, self.graph)
 
 class School(db.Model):
     __tablename__ = 'schools'
@@ -139,10 +144,11 @@ class Geo(db.Model):
 #solely for injecting data into db
 class Inject():
     def injectData(self):
-        import locale, urllib2, json
+        import locale, urllib2, json,os
         locale.setlocale( locale.LC_ALL, '' )
 
         f = open("app/data/listings.txt", 'r')
+        basedir = os.path.abspath(os.path.dirname(__file__))
 
         for line in f:
             toks = line.split(';')
@@ -173,7 +179,12 @@ class Inject():
                         tax_assesment_2011=linToks[22], tax_assesment_2010=linToks[23],
                         listing=newListing)
             imgPth = linToks[4] + "/" + linToks[0] + "/"
-            images = Image(path=imgPth, listing=newListing)
+            list_dir = os.listdir(basedir+"/static/images/houses/"+imgPth)
+            img_count = 0
+            for file in list_dir:
+                if file.endswith('.jpg'): # eg: '.txt'
+                    img_count += 1
+            images = Image(path=imgPth, listing=newListing, img_count=img_count)
             zipCode = linToks[4]
             elementary_school = middle_school = high_school=""
             violent_crime_rate = 0.87

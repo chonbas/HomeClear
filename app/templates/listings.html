@@ -1,10 +1,10 @@
 {% extends "mapView.html" %}
 
-{% block title %}HomeClear - Listings{% endblock %}
+{% block title %}HomeClear - {% if favs %}Favorites{% else %}Listings{% endif %}{% endblock %}
 
 {% block right_side %}
   <ul class="list-group" id="listingsPanel">
-    <li class="list-group-item listing"><h4> {{count}} search results</h4></li>
+    <h4> {% if favs %}Favorites{% else %}{{count}} search results<span style="float:right">  <a href={{ url_for('main.lots', address=address) }}>View Lots</a></span>{% endif %}</h4>
     {% for listing in listings %}
     <li class="list-group-item listing">
       <div class="row">
@@ -13,7 +13,15 @@
             <img src={{ url_for('static', filename='images') + "/houses/" + listing.images.first().path + "1.jpg" }} }}>
           </a>
         </div>
-        <h5 class="visLisAdd">{{ listing.street_address }}</h5>
+        <h4 class="visLisAdd">{{ listing.street_address }}
+        {% if current_user.is_authenticated %}
+          {% if listing in current_user.favorites.all() %}
+              <a href={{ url_for('main.unfavorite', listing_id=listing.id)}}><span class="glyphicon glyphicon-heart" aria-hidden="true"></span></a>
+          {% else %}
+              <a href={{ url_for('main.favorite', listing_id=listing.id)}}><span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span></a>
+          {% endif %}
+        {% endif %}
+      </h4>
         <div class="listingInfo" data-address="{{listing.raw_add}}" data-lat="{{listing.lati}}" data-lng="{{listing.longi}}"hidden></div>
         {{ listing.price }} <br/>
         {{ listing.area }} sq.ft<br/>

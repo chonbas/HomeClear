@@ -19,6 +19,27 @@ def search():
         query = g.search.search.data
         return searchParse(query)
 
+@main.route('/favorites/', methods=['GET', 'POST'])
+@login_required
+def favorites():
+    return render_template('listings.html', favs=True,listings=current_user.favorites, search=g.search, searchbar=True)
+
+@main.route('/favorite/<int:listing_id>', methods=['GET', 'POST'])
+@login_required
+def favorite(listing_id):
+    listing = Listing.query.get_or_404(listing_id)
+    if listing is not None:
+        current_user.favorites.append(listing)
+    return redirect(request.args.get('next') or request.referrer or url_for(default))
+
+@main.route('/unfavorite/<int:listing_id>', methods=['GET', 'POST'])
+@login_required
+def unfavorite(listing_id):
+    listing = Listing.query.get_or_404(listing_id)
+    if listing is not None:
+        current_user.favorites.remove(listing)
+    return redirect(request.args.get('next') or request.referrer or url_for(default))
+
 @main.route('/', methods=['GET', 'POST'])
 def index():
     search = SearchForm()
@@ -47,9 +68,27 @@ def report(address):
     geo_info = listing.geo_info.first()
     schools = listing.schools.first()
     imagePth = listing.images.first()
+    favorited = False
+    if current_user.is_authenticated:
+        if listing in current_user.favorites.all():
+            favorited = True
     return render_template('report.html', address=address,listing=listing, searchbar=True,
                             tax_info=tax_info, crime_info=crime_info,
-                            geo_info=geo_info, schools=schools, imgPth=imagePth)
+                            geo_info=geo_info, schools=schools, imgPth=imagePth, favorited=favorited)
+@main.route('/lots/<address>', methods=['GET','POST'])
+def lots(address):
+    parsed = usaddress.tag(address)[0]
+    listings =[]
+    if 'ZipCode' in parsed:
+        listings = list(Listing.query.filter_by(zipcode=parsed['ZipCode']).order_by(Listing.timestamp.desc()))
+    elif 'PlaceName' and 'StateName' in parsed:
+        listings = list(Listing.query.filter_by(city=parsed['PlaceName'],state=parsed['StateName']).order_by(Listing.timestamp.desc()))
+    else:
+        flash('Please enter a valid address including either a zipcode or city name and state.')
+    for listing in listings:
+        if listing.lot_area == 'N/A':
+            listings.remove(listing)
+    return render_template('lots.html', address=address, favs=False, search=g.search, searchbar=True,listings=listings,count=len(listings))
 
 @main.route('/listings/<address>', methods=['GET', 'POST'])
 def listings(address):
@@ -61,7 +100,7 @@ def listings(address):
         listings = Listing.query.filter_by(city=parsed['PlaceName'],state=parsed['StateName']).order_by(Listing.timestamp.desc())
     else:
         flash('Please enter a valid address including either a zipcode or city name and state.')
-    return render_template('listings.html', search=g.search, searchbar=True, listings=listings, count=listings.count())
+    return render_template('listings.html', address=address,favs=False,search=g.search, searchbar=True, listings=listings, count=listings.count())
 
 #Function to take a query and return either report or listings
 def searchParse(query):

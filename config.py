@@ -7,7 +7,6 @@ class Config:
     SQLALCHEMY_COMMIT_ON_TEARDOWN = True
     SQLALCHEMY_RECORD_QUERIES = True
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    WHOOSH_BASE = os.path.join(basedir, 'search.db')
     GOOGLE_API_KEY = 'AIzaSyDmIu9-SwJrS2LIWbF7v6d_ijPdSK-oWU4'
     @staticmethod
     def init_app(app):
