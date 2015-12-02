@@ -20,25 +20,43 @@ def search():
         return searchParse(query)
 
 @main.route('/favorites/', methods=['GET', 'POST'])
-@login_required
 def favorites():
-    listings = current_user.favorites
-    return render_template('listings.html', favs=True,listings=current_user.favorites, search=g.search, searchbar=True)
+    if current_user.is_authenticated:
+        listings = current_user.favorites
+    else:
+        listings=[]
+        if 'favorites' in session:
+            for listing_id in session['favorites']:
+                listing = Listing.query.get_or_404(listing_id)
+                listings.append(listing)
+        else:
+            session['favorites'] = {}
+    return render_template('listings.html', favs=True,listings=listings, search=g.search, searchbar=True)
 
 @main.route('/favorite/<int:listing_id>', methods=['GET', 'POST'])
-@login_required
 def favorite(listing_id):
     listing = Listing.query.get_or_404(listing_id)
-    if listing is not None:
-        current_user.favorites.append(listing)
+    if current_user.is_authenticated:
+        if listing is not None:
+            current_user.favorites.append(listing)
+    else:
+        if 'favorites' in session:
+            session['favorites'][listing_id]=True
+        else:
+            session['favorites'] = {}
     return redirect(request.args.get('next') or request.referrer or url_for('main.index'))
 
 @main.route('/unfavorite/<int:listing_id>', methods=['GET', 'POST'])
-@login_required
 def unfavorite(listing_id):
     listing = Listing.query.get_or_404(listing_id)
-    if listing is not None:
-        current_user.favorites.remove(listing)
+    if current_user.is_authenticated:
+        if listing is not None:
+            current_user.favorites.remove(listing)
+    else:
+        if 'favorites' in session:
+            del session['favorites'][str(listing_id)]
+        else:
+            session['favorites'] = {}
     return redirect(request.args.get('next') or request.referrer or url_for('main.index'))
 
 @main.route('/', methods=['GET', 'POST'])
@@ -79,13 +97,15 @@ def lots(address):
     if 'ZipCode' in parsed:
         listings = list(Listing.query.filter_by(zipcode=parsed['ZipCode']).order_by(Listing.timestamp.desc()))
     elif 'PlaceName' and 'StateName' in parsed:
+        if 'StreetNamePreDirectional' and 'StreetName' in parsed:
+            parsed['PlaceName'] = parsed['StreetNamePreDirectional'] + " " + parsed['StreetName'] + " " + parsed['PlaceName']
         listings = list(Listing.query.filter_by(city=parsed['PlaceName'],state=parsed['StateName']).order_by(Listing.timestamp.desc()))
     else:
         flash('Please enter a valid address including either a zipcode or city name and state.')
     for listing in listings:
         if listing.lot_area == 'N/A':
             listings.remove(listing)
-    return render_template('lots.html', address=address, favs=False, search=g.search, searchbar=True,listings=listings,count=len(listings))
+    return render_template('listings.html', query=address,lots=True,address=address, favs=False, search=g.search, searchbar=True,listings=listings,count=len(listings))
 
 @main.route('/listings/<address>', methods=['GET', 'POST'])
 def listings(address):
@@ -99,7 +119,7 @@ def listings(address):
         listings = list(Listing.query.filter_by(city=parsed['PlaceName'],state=parsed['StateName']).order_by(Listing.timestamp.desc()))
     else:
         flash('Please enter a valid address including either a zipcode or city name and state.')
-    return render_template('listings.html', address=address,favs=False,search=g.search, searchbar=True, listings=listings, count=len(listings))
+    return render_template('listings.html',query=address, lots=False,address=address,favs=False,search=g.search, searchbar=True, listings=listings, count=len(listings))
 
 #Function to take a query and return either report or listings
 def searchParse(query):

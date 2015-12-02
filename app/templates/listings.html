@@ -1,12 +1,48 @@
 {% extends "mapView.html" %}
 
-{% block title %}HomeClear - {% if favs %}Favorites{% else %}Listings{% endif %}{% endblock %}
+{% block title %}HomeClear - {% if favs %}Favorites{% elif lots %}Lots{% else %}Listings{% endif %}{% endblock %}
 
 {% block right_side %}
   <ul class="list-group" id="listingsPanel">
-    <h4> {% if favs %}Favorites{% else %}{{count}} search results<span style="float:right"><a href={{ url_for('main.lots', address=address) }}>View Lots</a></span>{% endif %}</h4>
+    <h3> {% if favs %}Favorites
+      {% else %}
+        {% if lots %}Lots -
+        {%else%} Listings -
+        {% endif %}
+        <small> {{count}} search results for {{query}}</small>
+      {% endif %}
+    </h3>
+    <h4>
+      <li class="dropdown" style="list-style:none">
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+          Sort <b class="caret"></b>
+      </a>
+      <ul class="dropdown-menu">
+          <li><a href="#" id="SortPriceLoHi">Price - <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></a></li>
+          <li><a href="#" id="SortPriceHiLo">Price - <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></a></li>
+          {% if lots %}
+          <li><a href="#" id="SortLotSqFtLoHi">Square Footage - <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></a></li>
+          <li><a href="#" id="SortLotSqFtHiLo">Square Footage - <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></a></li>
+          {% else %}
+          <li><a href="#" id="SortSqFtLoHi">Square Footage - <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></a></li>
+          <li><a href="#" id="SortSqFtHiLo">Square Footage - <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></a></li>
+          <li><a href="#" id="SortBedLoHi">Bedrooms - <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></a></li>
+          <li><a href="#" id="SortBedHiLo">Bedrooms - <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></a></li>
+          <li><a href="#" id="SortBathLoHi">Bathrooms - <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></a></li>
+          <li><a href="#" id="SortBathHiLo">Bathrooms - <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></a></li>
+          {% endif %}
+      </ul>
+      {% if lots %}
+      <span style="float:right"><a href={{ url_for('main.listings', address=address) }}>View Listings</a></span>
+      {%else %}
+      <span style="float:right"><a href={{ url_for('main.lots', address=address) }}>View Lots</a></span>
+      {% endif %}
+    </li>
+    </h4>
+  </ul>
+  <ul class="list-group" id="listings">
     {% for listing in listings %}
-    <li class="list-group-item listing">
+    <li class="list-group-item listing" data-price="{{listing.raw_price}}" data-bedrooms="{{listing.bedrooms}}" data-bathrooms="{{listing.bathrooms}}" data-sqft="{{listing.area}}">
       <div class="row">
         <div class="col-xs-6 col-md-6">
           <a href={{url_for('main.report',address=listing.raw_add)}} class="thumbnail">
@@ -21,22 +57,37 @@
               <a href={{ url_for('main.favorite', listing_id=listing.id)}}><span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span></a>
           {% endif %}
         {% else %}
+          {% if 'favorites' in session %}
+            {% if listing.id|string in session['favorites'].keys() %}
+            <a href={{ url_for('main.unfavorite', listing_id=listing.id)}}><span class="glyphicon glyphicon-heart" aria-hidden="true"></span></a>
+            {% else %}
             <a href={{ url_for('main.favorite', listing_id=listing.id)}}><span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span></a>
+            {% endif %}
+          {% else %}
+          <a href={{ url_for('main.favorite', listing_id=listing.id)}}><span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span></a>
           {% endif %}
+        {% endif %}
       </h4>
       <h5>{{listing.city}}, {{listing.state}}</h5>
-        <div class="listingInfo" data-address="{{listing.raw_add}}" data-lat="{{listing.lati}}" data-lng="{{listing.longi}}"hidden></div>
+        <div class="listingInfo" data-index="{{ loop.index }}" data-address="{{listing.raw_add}}" data-lat="{{listing.lati}}" data-lng="{{listing.longi}}"hidden></div>
+        {% if lots %}
+        <h4>{{ listing.lot_area }} sq.ft</h4>
+        {{ listing.price }} <br/>
+        {% else %}
         {{ listing.price }} <br/>
         {{ listing.area }} sq.ft<br/>
         BedRms: {{listing.bedrooms}} BthRms: {{listing.bathrooms}}<br/>
+        {% endif %}
       </div>
+    </li>
     {% endfor %}
   </ul>
 {% endblock %}
 
 {% block scripts %}
 {{ super() }}
-
-<script type="text/javascript" src="{{url_for('static', filename='listingsmap.js')}}"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tinysort/2.2.2/tinysort.js"></script>
+<script type="text/javascript" src="{{url_for('static', filename='js/listingsmap.js')}}"></script>
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBKbLsDaThcgwIzJnk6b7auex7zaWizfGc&signed_in=true&callback=initMap" async defer></script>
+<script type="text/javascript" src="{{url_for('static', filename='js/sorting.js')}}"></script>
 {% endblock %}

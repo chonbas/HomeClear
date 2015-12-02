@@ -31,3 +31,8 @@ span.search-bar{
 #crime-chart-div{
   width: auto;
 }
+#carousel .item img{
+    display: block;
+    width: 100%;
+    height: auto;
+}

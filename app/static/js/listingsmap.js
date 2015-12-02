@@ -5,7 +5,6 @@ function initMap() {
   });
 
     var geocoder = new google.maps.Geocoder();
-    var count = 1;
     $('.listingInfo').each(function(i, obj) {
       var address = this.getAttribute("data-address");
       var lati = parseFloat(this.getAttribute("data-lat"));
@@ -14,10 +13,8 @@ function initMap() {
       map.setCenter(pos);
       var marker = new google.maps.Marker({
         map: map,
-        label: ""+count,
+        label: parseInt(this.getAttribute("data-index")),
         position: pos,
       });
-      count++;
-      console.log(count);
     });
 };

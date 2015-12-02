@@ -37,6 +37,7 @@ class User(UserMixin, db.Model):
     def verify_password(self, password):
         return check_password_hash(self.password_hash, password)
 
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
@@ -52,6 +53,7 @@ class Listing(db.Model):
     state = db.Column(db.String(32))
     zipcode = db.Column(db.String(16))
     price = db.Column(db.String(32))
+    raw_price = db.Column(db.Integer)
     area = db.Column(db.Integer)
     lot_area = db.Column(db.Integer)
     bedrooms = db.Column(db.Integer)
@@ -184,7 +186,7 @@ class Inject():
                 last_sold_price = locale.currency( int(last_sold_price), grouping=True )
             newListing = Listing(raw_add = raw_add, street_address = linToks[1],
                             city = linToks[2], state=linToks[3],zipcode=linToks[4],
-                            price=locale.currency( int(linToks[9]), grouping=True ), area=linToks[5], lot_area=linToks[6],
+                            raw_price=linToks[9],price=locale.currency( int(linToks[9]), grouping=True ), area=linToks[5], lot_area=linToks[6],
                             bedrooms=linToks[7], bathrooms=linToks[8], realtor=linToks[10],
                             built_in=linToks[11], lati=lati, longi=longi)
             newTax = Tax(last_sold_date=linToks[12],last_sold_price=last_sold_price,

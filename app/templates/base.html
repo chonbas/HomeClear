@@ -33,14 +33,13 @@
                         Account <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a href="{{ url_for('main.favorites') }}">Favorites</a></li>
                         <li><a href="{{ url_for('auth.change_password') }}">Change Password</a></li>
                         <li><a href="{{ url_for('auth.logout') }}">Log Out</a></li>
                     </ul>
 
                 {% else %}
-                    <li id="lefty"><a href="{{ url_for('auth.login') }}">Login</a></li>
-                    <li id="lefty"><a href="{{ url_for('auth.register') }}">Register</a></li>
+                    <li ><a href="{{ url_for('auth.login') }}">Login</a></li>
+                    <li ><a href="{{ url_for('auth.register') }}">Register</a></li>
                 {% endif %}
               {% if searchbar %}
                 <li><span class="search-bar"> {{ wtf.quick_form(g.search, action=url_for('main.search', address=g.search.search.data), method="post") }}</span></li>
@@ -49,6 +48,9 @@
               </a></li>
               {% endif %}
             </ul>
+            <ul class="nav navbar-nav navbar-right">
+            <li class="navbar-right"><a  href="{{ url_for('main.favorites') }}">Favorites</a></li>
+          </ul>
         </div>
     </div>
 </div>

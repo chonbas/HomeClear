@@ -12,6 +12,6 @@ function initMap() {
     map.setCenter(pos);
     var marker = new google.maps.Marker({
       map: map,
-      position: pos//results[0].geometry.location
+      position: pos
     });
 };
