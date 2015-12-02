@@ -22,7 +22,7 @@ def search():
 @main.route('/favorites/', methods=['GET', 'POST'])
 def favorites():
     if current_user.is_authenticated:
-        listings = current_user.favorites
+        listings = list(current_user.favorites)
     else:
         listings=[]
         if 'favorites' in session:
@@ -31,7 +31,7 @@ def favorites():
                 listings.append(listing)
         else:
             session['favorites'] = {}
-    return render_template('listings.html', favs=True,listings=listings, search=g.search, searchbar=True)
+    return render_template('listings.html', favs=True,listings=listings, search=g.search, searchbar=True, count=len(listings))
 
 @main.route('/favorite/<int:listing_id>', methods=['GET', 'POST'])
 def favorite(listing_id):
@@ -44,6 +44,7 @@ def favorite(listing_id):
             session['favorites'][listing_id]=True
         else:
             session['favorites'] = {}
+            session['favorites'][listing_id]=True
     return redirect(request.args.get('next') or request.referrer or url_for('main.index'))
 
 @main.route('/unfavorite/<int:listing_id>', methods=['GET', 'POST'])

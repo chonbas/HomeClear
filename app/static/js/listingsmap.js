@@ -9,11 +9,12 @@ function initMap() {
       var address = this.getAttribute("data-address");
       var lati = parseFloat(this.getAttribute("data-lat"));
       var longi = parseFloat(this.getAttribute("data-lng"));
+      var image = "/static/icons/"+this.getAttribute('data-color')+"/number_" + this.getAttribute("data-index") + ".png";
       var pos = {'lat': lati, 'lng':longi};
       map.setCenter(pos);
       var marker = new google.maps.Marker({
         map: map,
-        label: parseInt(this.getAttribute("data-index")),
+        icon: image,
         position: pos,
       });
     });
