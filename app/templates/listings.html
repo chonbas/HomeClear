@@ -34,9 +34,9 @@
       </ul>
       {% if not favs %}
       {% if lots %}
-      <span style="float:right"><a href={{ url_for('main.listings', address=address) }}>View Listings</a></span>
+      <span style="float:right"><a href={{ url_for('main.listings', address=address, filters=act_filters) }}>View Listings</a></span>
       {%else %}
-      <span style="float:right"><a href={{ url_for('main.lots', address=address) }}>View Lots</a></span>
+      <span style="float:right"><a href={{ url_for('main.lots', address=address, filters=act_filters) }}>View Lots</a></span>
       {% endif %}
       {% endif %}
     </li>

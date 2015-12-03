@@ -3,27 +3,46 @@ from flask import render_template, redirect, url_for, abort, flash, request,\
 from flask.ext.login import login_required, current_user
 from flask.ext.sqlalchemy import get_debug_queries
 from . import main
-from .forms import SearchForm, FilterForm
+from .forms import SearchForm
 from .. import db, moment
 from ..models import User, Listing, Tax, School, Geo, Crime, School
 from ..listingGenerator import generateListing
-import usaddress, urllib2, json
+import usaddress, urllib2, json, ast
 
 @main.before_request
 def before_request():
     g.search = SearchForm()
-    g.filters = FilterForm()
 
 @main.route('/search', methods=['GET','POST'])
 def search():
     if g.search.validate_on_submit():
         query = g.search.search.data
-        filters = {'bedrooms':g.filters.rooms.data,
-                    'bathrooms':g.filters.bathrooms.data,
-                    'min_area':g.filters.area.data,
-                    'min_price':g.filters.min_price.data,
-                    'max_price':g.filters.max_price.data}
+        filters = dict()
+        filters['min_bedrooms']=int(float(g.search.min_rooms.data+".0"))
+        filters['max_bedrooms']=int(float(g.search.max_rooms.data+".0"))
+        filters['min_bathrooms']=int(float(g.search.min_bathrooms.data+".0"))
+        filters['max_bathrooms']=int(float(g.search.max_bathrooms.data+".0"))
+        filters['min_area']=int(float(g.search.min_area.data+".0"))
+        filters['max_area']=int(float(g.search.max_area.data+".0"))
+        filters['min_price']=int(float(g.search.min_price.data.replace(',','').replace('$','')+".0"))
+        filters['max_price']=int(float(g.search.max_price.data.replace(',','').replace('$','')+".0"))
         return searchParse(query, filters)
+
+@main.route('/', methods=['GET', 'POST'])
+def index():
+    if g.search.validate_on_submit():
+        query = g.search.search.data
+        filters = dict()
+        filters['min_bedrooms']=int(float(g.search.min_rooms.data+".0"))
+        filters['max_bedrooms']=int(float(g.search.max_rooms.data+".0"))
+        filters['min_bathrooms']=int(float(g.search.min_bathrooms.data+".0"))
+        filters['max_bathrooms']=int(float(g.search.max_bathrooms.data+".0"))
+        filters['min_area']=int(float(g.search.min_area.data+".0"))
+        filters['max_area']=int(float(g.search.max_area.data+".0"))
+        filters['min_price']=int(float(g.search.min_price.data.replace(',','').replace('$','')+".0"))
+        filters['max_price']=int(float(g.search.max_price.data.replace(',','').replace('$','')+".0"))
+        return searchParse(query, filters)
+    return render_template('index.html', search=g.search, searchbar=False)
 
 @main.route('/favorites/', methods=['GET', 'POST'])
 def favorites():
@@ -66,19 +85,6 @@ def unfavorite(listing_id):
             session['favorites'] = {}
     return redirect(request.args.get('next') or request.referrer or url_for('main.index'))
 
-@main.route('/', methods=['GET', 'POST'])
-def index():
-    if g.search.validate_on_submit():
-        query = g.search.search.data
-        filters = {'bedrooms':g.filters.rooms.data,
-                    'bathrooms':g.filters.bathrooms.data,
-                    'min_area':g.filters.area.data,
-                    'min_price':g.filters.min_price.data,
-                    'max_price':g.filters.max_price.data}
-        return searchParse(query, filters)
-    return render_template('index.html', search=g.search, filters=g.filters, searchbar=False)
-
-
 @main.route('/report/<address>', methods=['GET', 'POST'])
 def report(address):
     add = urllib2.quote(address)
@@ -100,8 +106,8 @@ def report(address):
     return render_template('report.html', address=address,listing=listing, searchbar=True,
                             tax_info=tax_info, crime_info=crime_info,
                             geo_info=geo_info, schools=schools, imgPth=imagePth)
-@main.route('/lots/<address>', methods=['GET','POST'])
-def lots(address):
+@main.route('/lots/<address>?<filters>', methods=['GET','POST'])
+def lots(address,filters):
     parsed = usaddress.tag(address)[0]
     listings =[]
     if 'ZipCode' in parsed:
@@ -115,7 +121,8 @@ def lots(address):
     for listing in listings:
         if listing.lot_area == 'N/A':
             listings.remove(listing)
-    return render_template('listings.html', query=address,lots=True,address=address, favs=False, search=g.search, searchbar=True,listings=listings,count=len(listings))
+    listings = apply_filters(listings,filters)
+    return render_template('listings.html', act_filters=filters,query=address,lots=True,address=address, favs=False, search=g.search, searchbar=True,listings=listings,count=len(listings))
 
 @main.route('/listings/<address>?<filters>', methods=['GET', 'POST'])
 def listings(address,filters):
@@ -129,8 +136,8 @@ def listings(address,filters):
         listings = list(Listing.query.filter_by(city=parsed['PlaceName'],state=parsed['StateName']).order_by(Listing.timestamp.desc()))
     else:
         flash('Please enter a valid address including either a zipcode or city name and state.')
-    print g.filters.rooms.data
-    return render_template('listings.html',query=address, lots=False,address=address,favs=False,search=g.search, searchbar=True, listings=listings, count=len(listings))
+    listings = apply_filters(listings, filters)
+    return render_template('listings.html',act_filters=filters,query=address, lots=False,address=address,favs=False,search=g.search, searchbar=True, listings=listings, count=len(listings))
 
 #Function to take a query and return either report or listings
 def searchParse(query, filters):
@@ -139,3 +146,34 @@ def searchParse(query, filters):
         return redirect(url_for('.report', address=query))
     else:
         return redirect(url_for('.listings', address=query, filters=filters))
+
+def apply_filters(listings,filters):
+    filters = ast.literal_eval(filters)
+    filteredListings = list()
+    for listing in listings:
+        if filters['min_bedrooms'] != 0:
+            if listing.bedrooms < filters['min_bedrooms']:
+                continue
+        if filters['max_bedrooms'] != 0:
+            if listing.bedrooms > filters['max_bedrooms']:
+                continue
+        if filters['min_bathrooms'] != 0:
+            if listing.bathrooms < filters['min_bathrooms']:
+                continue
+        if filters['max_bathrooms'] != 0:
+            if listing.bathrooms > filters['max_bathrooms']:
+                continue
+        if filters['min_area'] != 0:
+            if listing.area < filters['min_area']:
+                continue
+        if filters['max_area'] != 0:
+            if listing.area > filters['max_area']:
+                continue
+        if filters['min_price'] != 0:
+            if listing.raw_price < filters['min_price']:
+                continue
+        if filters['max_price'] != 0:
+            if listing.raw_price > filters['max_price']:
+                continue
+        filteredListings.append(listing)
+    return filteredListings

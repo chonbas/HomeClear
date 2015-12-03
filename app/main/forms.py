@@ -7,10 +7,12 @@ from ..models import User
 
 class SearchForm(Form):
     search = StringField('', validators=[Length(5,64)])
-
-class FilterForm(Form):
-    rooms = IntegerField('Bedrooms:')
-    bathrooms = IntegerField('Bathrooms:')
-    area = IntegerField('Min Square Feet:')
-    min_price = IntegerField('Min Price:')
-    max_price = IntegerField('Max Price:')
+    submit = SubmitField('Search')
+    min_rooms = StringField('Min Bedrooms:')
+    max_rooms = StringField('Max Bedrooms:')
+    min_bathrooms = StringField('Min Bathrooms:')
+    max_bathrooms = StringField('Max Bathrooms:')
+    min_area = StringField('Min Square Feet:')
+    max_area = StringField('Max Square Feet:')
+    min_price = StringField('Min Price:')
+    max_price = StringField('Max Price:')
