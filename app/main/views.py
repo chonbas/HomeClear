@@ -7,7 +7,7 @@ from .forms import SearchForm
 from .. import db, moment
 from ..models import User, Listing, Tax, School, Geo, Crime, School
 from ..listingGenerator import generateListing
-import usaddress, urllib2, json, ast
+import usaddress, urllib2, json, ast,string
 
 @main.before_request
 def before_request():
@@ -113,6 +113,7 @@ def lots(address,filters):
     if 'ZipCode' in parsed:
         listings = list(Listing.query.filter_by(zipcode=parsed['ZipCode']).order_by(Listing.timestamp.desc()))
     elif 'PlaceName' and 'StateName' in parsed:
+        parsed['StateName'] = parsed['StateName'].upper()
         if 'StreetNamePreDirectional' and 'StreetName' in parsed:
             parsed['PlaceName'] = parsed['StreetNamePreDirectional'] + " " + parsed['StreetName'] + " " + parsed['PlaceName']
         listings = list(Listing.query.filter_by(city=parsed['PlaceName'],state=parsed['StateName']).order_by(Listing.timestamp.desc()))
@@ -131,6 +132,7 @@ def listings(address,filters):
     if 'ZipCode' in parsed:
         listings = list(Listing.query.filter_by(zipcode=parsed['ZipCode']).order_by(Listing.timestamp.desc()))
     elif 'PlaceName' and 'StateName' in parsed:
+        parsed['StateName'] = parsed['StateName'].upper()
         if 'StreetNamePreDirectional' and 'StreetName' in parsed:
             parsed['PlaceName'] = parsed['StreetNamePreDirectional'] + " " + parsed['StreetName'] + " " + parsed['PlaceName']
         listings = list(Listing.query.filter_by(city=parsed['PlaceName'],state=parsed['StateName']).order_by(Listing.timestamp.desc()))
@@ -141,6 +143,8 @@ def listings(address,filters):
 
 #Function to take a query and return either report or listings
 def searchParse(query, filters):
+    query = str(query)
+    query = string.capwords(query)
     parsed = usaddress.tag(query) # returns tuple with parsed string and 'street address' or 'ambiguous'
     if parsed[1] == 'Street Address':
         return redirect(url_for('.report', address=query))
