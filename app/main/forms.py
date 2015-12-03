@@ -11,6 +11,6 @@ class SearchForm(Form):
 class FilterForm(Form):
     rooms = IntegerField('Bedrooms:')
     bathrooms = IntegerField('Bathrooms:')
-    area = IntegerField('Square Feet:')
+    area = IntegerField('Min Square Feet:')
     min_price = IntegerField('Min Price:')
     max_price = IntegerField('Max Price:')

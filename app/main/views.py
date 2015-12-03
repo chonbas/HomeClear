@@ -18,7 +18,12 @@ def before_request():
 def search():
     if g.search.validate_on_submit():
         query = g.search.search.data
-        return searchParse(query)
+        filters = {'bedrooms':g.filters.rooms.data,
+                    'bathrooms':g.filters.bathrooms.data,
+                    'min_area':g.filters.area.data,
+                    'min_price':g.filters.min_price.data,
+                    'max_price':g.filters.max_price.data}
+        return searchParse(query, filters)
 
 @main.route('/favorites/', methods=['GET', 'POST'])
 def favorites():
@@ -65,8 +70,12 @@ def unfavorite(listing_id):
 def index():
     if g.search.validate_on_submit():
         query = g.search.search.data
-        filters = {'bedrooms':g.filters.}
-        return searchParse(query)
+        filters = {'bedrooms':g.filters.rooms.data,
+                    'bathrooms':g.filters.bathrooms.data,
+                    'min_area':g.filters.area.data,
+                    'min_price':g.filters.min_price.data,
+                    'max_price':g.filters.max_price.data}
+        return searchParse(query, filters)
     return render_template('index.html', search=g.search, filters=g.filters, searchbar=False)
 
 
@@ -108,8 +117,8 @@ def lots(address):
             listings.remove(listing)
     return render_template('listings.html', query=address,lots=True,address=address, favs=False, search=g.search, searchbar=True,listings=listings,count=len(listings))
 
-@main.route('/listings/<address>', methods=['GET', 'POST'])
-def listings(address):
+@main.route('/listings/<address>?<filters>', methods=['GET', 'POST'])
+def listings(address,filters):
     parsed = usaddress.tag(address)[0]
     listings =[]
     if 'ZipCode' in parsed:
@@ -124,9 +133,9 @@ def listings(address):
     return render_template('listings.html',query=address, lots=False,address=address,favs=False,search=g.search, searchbar=True, listings=listings, count=len(listings))
 
 #Function to take a query and return either report or listings
-def searchParse(query):
+def searchParse(query, filters):
     parsed = usaddress.tag(query) # returns tuple with parsed string and 'street address' or 'ambiguous'
     if parsed[1] == 'Street Address':
         return redirect(url_for('.report', address=query))
     else:
-        return redirect(url_for('.listings', address=query))
+        return redirect(url_for('.listings', address=query, filters=filters))
