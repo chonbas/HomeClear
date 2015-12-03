@@ -45,7 +45,11 @@
                 <li><span class="search-bar"> {{ wtf.quick_form(g.search, action=url_for('main.search', address=g.search.search.data), method="post") }}</span></li>
                 <li><a href="#" class="dropdown-toggle" id="showFilters" data-toggle="dropdown">
                  Show Filters<b class="caret"></b>
-              </a></li>
+              </a>
+              <ul class="dropdown-menu">
+                  <li>{{wtf.quick_form(g.filters)}}</li>
+              </ul>
+                </li>
               {% endif %}
             </ul>
             <ul class="nav navbar-nav navbar-right">

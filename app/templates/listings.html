@@ -51,7 +51,7 @@
             <img src={{ url_for('static', filename='images') + "/houses/" + listing.images.first().path + "1.jpg" }} }}>
           </a>
         </div>
-        <h4 class="visLisAdd">{{loop.index}} - {{ listing.street_address }}
+        <h4 class="visLisAdd"><a href={{url_for('main.report',address=listing.raw_add)}}>{{loop.index}} - {{ listing.street_address }}</a>
         {% if current_user.is_authenticated %}
           {% if listing in current_user.favorites.all() %}
               <a href={{ url_for('main.unfavorite', listing_id=listing.id)}}><span class="glyphicon glyphicon-heart" aria-hidden="true"></span></a>
@@ -71,7 +71,7 @@
         {% endif %}
       </h4>
       <h5>{{listing.city}}, {{listing.state}}</h5>
-        <div class="listingInfo" data-color={% if lots %}'blue'{% else %}'green'{%endif%}data-index={{ loop.index }} data-address="{{listing.raw_add}}" data-lat="{{listing.lati}}" data-lng="{{listing.longi}}"hidden></div>
+        <div class="listingInfo" data-color={% if lots %}'blue'{% else %}'green'{%endif%} data-index={{ loop.index }} data-address="{{listing.raw_add}}" data-lat="{{listing.lati}}" data-lng="{{listing.longi}}"hidden></div>
         {% if lots %}
         <h4>{{ listing.lot_area }} sq.ft</h4>
         {{ listing.price }} <br/>

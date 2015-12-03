@@ -12,6 +12,7 @@ import usaddress, urllib2, json
 @main.before_request
 def before_request():
     g.search = SearchForm()
+    g.filters = FilterForm()
 
 @main.route('/search', methods=['GET','POST'])
 def search():
@@ -62,12 +63,11 @@ def unfavorite(listing_id):
 
 @main.route('/', methods=['GET', 'POST'])
 def index():
-    search = SearchForm()
-    filters = FilterForm()
-    if search.validate_on_submit():
-        query = search.search.data
+    if g.search.validate_on_submit():
+        query = g.search.search.data
+        filters = {'bedrooms':g.filters.}
         return searchParse(query)
-    return render_template('index.html', search=search, filters=filters, searchbar=False)
+    return render_template('index.html', search=g.search, filters=g.filters, searchbar=False)
 
 
 @main.route('/report/<address>', methods=['GET', 'POST'])
@@ -120,6 +120,7 @@ def listings(address):
         listings = list(Listing.query.filter_by(city=parsed['PlaceName'],state=parsed['StateName']).order_by(Listing.timestamp.desc()))
     else:
         flash('Please enter a valid address including either a zipcode or city name and state.')
+    print g.filters.rooms.data
     return render_template('listings.html',query=address, lots=False,address=address,favs=False,search=g.search, searchbar=True, listings=listings, count=len(listings))
 
 #Function to take a query and return either report or listings
