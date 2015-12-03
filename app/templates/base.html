@@ -14,8 +14,8 @@
 
 
 {% block navbar %}
+<div class="navbar navbar" id="hc-navbar" role="navigation">
 
-<div class="navbar navbar-inverse" id="hc-navbar" role="navigation">
     <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -28,7 +28,6 @@
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <!-- <li><a href="{{ url_for('main.index') }}">Home</a></li> -->
                 {% if current_user.is_authenticated %}
                     <li class="dropdown" id="lefty">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -44,10 +43,45 @@
                     <li ><a href="{{ url_for('auth.register') }}">Register</a></li>
                 {% endif %}
               {% if searchbar %}
-                <li><span class="search-bar"> {{ wtf.quick_form(g.search, action=url_for('main.search', address=g.search.search.data), method="post") }}</span></li>
-                <li><a href="#" class="dropdown-toggle" id="showFilters" data-toggle="dropdown">
-                 Show Filters<b class="caret"></b>
-              </a></li>
+                <li>
+                  <form class="navbar-form navbar-left" action="{{url_for('main.search', address=g.search.search.data)}}" method="post" role="form">
+                    <div style="display:none;">{{ g.search.csrf_token }}</div>
+                    <div class="input-group ">
+                              <input class="form-control" id="search" placeholder="Enter an address or zipcode..." name="search" type="text" value="">
+                              <span class="input-group-btn">
+                              <button class="btn btn-default" id="submit" name="submit" type="submit">Go!</button>
+                              </span>
+                      </div>
+                  </li>
+                    <li class="dropdown" >
+                      <a href="#" class="dropdown-toggle" id="showFilters" data-toggle="dropdown">
+                         Show Filters<b class="caret"></b>
+                      </a>
+                      <a href="#" class="dropdown-toggle" id="hideFilters" data-toggle="dropdown">
+                         Hide Filters<b class="caret"></b>
+                      </a>
+                    <ul class = "dropdown-menu">
+                    <div id="filters" hidden>
+                  <div class="form-group "><label class="control-label" for="rooms">Bedrooms:</label>
+                            <input class="form-control" placeholder="Min" id="min_rooms" name="min_rooms" type="text" value="">
+                            <input class="form-control" placeholder="Max" id="max_rooms" name="max_rooms" type="text" value="">
+                    </div>
+                  <div class="form-group "><label class="control-label" for="bathrooms">Bathrooms:</label>
+                            <input class="form-control" placeholder="Min" id="min_bathrooms" name="min_bathrooms" type="text" value="">
+                            <input class="form-control" placeholder="Max" id="max_bathrooms" name="max_bathrooms" type="text" value="">
+                    </div>
+                  <div class="form-group "><label class="control-label" for="area">Min Square Feet:</label>
+                            <input class="form-control" placeholder="Min" id="min_area" name="min_area" type="text" value="">
+                            <input class="form-control" placeholder="Max" id="max_area" name="max_area" type="text" value="">
+                    </div>
+                  <div class="form-group "><label class="control-label" for="price">Min Price:</label>
+                            <input class="form-control" placeholder="Min" id="min_price" name="min_price" type="text" value="">
+                            <input class="form-control" placeholder="Max" id="max_price" name="max_price" type="text" value="">
+                    </div>
+                  </div>
+                </ul>
+                  </form>
+                </li>
               {% endif %}
             </ul>
             <ul class="nav navbar-nav navbar-right">
@@ -74,13 +108,9 @@
 
 {% block scripts %}
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="{{url_for('static',filename='js/filters.js') }}"></script>
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-<script type=text/javascript> $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};</script>
-<script>
-$(document).ready(function(){
-  $("#search").attr("placeholder", "Enter an address or zipcode...");
-});
-</script>
+
 {{ super() }}
 {{ moment.include_moment() }}
 {% endblock %}

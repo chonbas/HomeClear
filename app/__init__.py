@@ -7,7 +7,9 @@ from flask.ext.sqlalchemy import SQLAlchemy
 import flask.ext.whooshalchemy as Whoosh
 from config import config
 
-#initialize all
+from flask_wtf.csrf import CsrfProtect
+
+csrf = CsrfProtect()
 db = SQLAlchemy()
 bootstrap = Bootstrap()
 moment = Moment()
@@ -27,6 +29,7 @@ def create_app(config_name):
     db.init_app(app)
     moment.init_app(app)
     bootstrap.init_app(app)
+    csrf.init_app(app)
 
     #prevent circular imports
 

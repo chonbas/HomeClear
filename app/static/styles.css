@@ -113,7 +113,7 @@ span.search-bar{
 #filtersToggle{
   text-decoration: none;
   text-align:center;
-  margin-top: -15px;
+  margin-top: 0px;
   margin-bottom: 0;
 }
 
@@ -140,18 +140,10 @@ span.search-bar{
 
 #listings.list-group li {
   border:none;
-  border-top: 1px solid rgba(0,0,0,.12); 
+  border-top: 1px solid rgba(0,0,0,.12);
 }
 
 .listingThumbnails a {
   border:none;
   margin-bottom: 5px;
 }
-
-
-
-
-
-
-
-
