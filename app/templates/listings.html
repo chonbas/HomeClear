@@ -4,10 +4,10 @@
 
 {% block right_side %}
   <ul class="list-group" id="listingsPanel">
-    <h3> {% if favs %}Favorites - <small> {{count}}</small>
+    <h3> {% if favs %}Favorites <small> {{count}}</small>
       {% else %}
-        {% if lots %}Lots -
-        {%else%} Listings -
+        {% if lots %}Lots
+        {%else%} Listings
         {% endif %}
         <small> {{count}} search results for {{query}}</small>
       {% endif %}
@@ -46,7 +46,7 @@
     {% for listing in listings %}
     <li class="list-group-item listing" data-price="{{listing.raw_price}}" data-bedrooms="{{listing.bedrooms}}" data-bathrooms="{{listing.bathrooms}}" data-sqft="{{listing.area}}">
       <div class="row">
-        <div class="col-xs-6 col-md-6">
+        <div class="col-xs-6 col-md-6 listingThumbnails">
           <a href={{url_for('main.report',address=listing.raw_add)}} class="thumbnail">
             <img src={{ url_for('static', filename='images') + "/houses/" + listing.images.first().path + "1.jpg" }} }}>
           </a>

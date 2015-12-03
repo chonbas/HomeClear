@@ -6,7 +6,7 @@
 <div class="container" id="indexMain">
 <div class="row">
   <div class="col-md-4"></div>
-  <div class="col-md-4">
+  <div class="col-md-4" id="indexMainLogo">
       <img class="img-responsive" src={{url_for('static', filename='logo.png')}}>
       <form action="" method="post"
         class="form" role="form">
@@ -15,11 +15,11 @@
 
                 <input class="form-control" id="search" placeholder="Enter an address or zipcode..." name="search" type="text" value="">
                 <span class="input-group-btn">
-                <button class="btn btn-default" id="submit" name="submit" type="submit">Go!</button>
+                <button style="margin-top:-5px"class="btn btn-default" id="submit" name="submit" type="submit">Go!</button>
                 </span>
                 <br>
         </div>
-        <p style="text-align:center">
+        <p style="text-align:center" id="filtersToggle">
           <a href="#" class="dropdown-toggle" id="showFilters" data-toggle="dropdown">
              Show Filters<b class="caret"></b>
           </a>
