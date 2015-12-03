@@ -1,8 +1,8 @@
 $(document).ready(function(){
   $("#hideFilters").hide();
   $("#showFilters").show();
-  $('#submit').hide();
   $("#filters").hide();
+
 
 
   $("#showFilters").click(function(){
