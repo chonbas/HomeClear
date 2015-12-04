@@ -7,14 +7,14 @@
 <li role="presentation" id="miscInfoBtn"><a href="#"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Misc</a></li>
 </ul>
 <ul class="list-group">
-  <li class="list-group-item"></li>
-  <li class="list-group-item">Listed price {{ listing.price }}</li>
-  <li class="list-group-item">Area: {{ listing.area }}sq.ft.</li>
+  <li class="list-group-item"><h3 style="margin-top:10px;">Listed price: {{ listing.price }}</h3></li>
+  <li class="list-group-item"><span> Area:</span> {{ listing.area }}sq.ft.</li>
   {% if listing.lot_area != "N/A" %}
-  <li class="list-group-item">Lot Area: {{ listing.lot_area }}sq.ft.</li>
+  <li class="list-group-item"><span>Lot Area:</span> {{ listing.lot_area }}sq.ft.</li>
   {% endif %}
-  <li class="list-group-item">{{ listing.bedrooms }} Bedrooms, {{ listing.bathrooms }} Bathrooms</li>
-  <li class="list-group-item">Built in {{ listing.built_in }}</li>
-  <li class="list-group-item">Realtor: {{ listing.realtor }}</li>
-  <li class="list-group-item">Listed {{ moment(listing.timestamp).fromNow() }}</li>
+  <li class="list-group-item"><span> Bedrooms: </span> {{ listing.bedrooms }}</li>
+  <li class="list-group-item"><span>Bathrooms: </span>{{ listing.bathrooms }}</li>
+  <li class="list-group-item"><span>Built in:</span> {{ listing.built_in }}</li>
+  <li class="list-group-item"><span>Realtor:</span> {{ listing.realtor }}</li>
+  <li class="list-group-item"><span>Listed:</span> {{ moment(listing.timestamp).fromNow() }}</li>
 </ul>

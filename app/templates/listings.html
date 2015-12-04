@@ -14,8 +14,8 @@
     </h3>
     <h4>
       <li class="dropdown" style="list-style:none">
-      <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-          Sort <b class="caret"></b>
+      <a href="#" class="dropdown-toggle sortOption" data-toggle="dropdown">
+          Sort  <b class="caret"></b>
       </a>
       <ul class="dropdown-menu">
           <li><a href="#" id="SortPriceLoHi">Price - <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></a></li>
@@ -34,9 +34,9 @@
       </ul>
       {% if not favs %}
       {% if lots %}
-      <span style="float:right"><a href={{ url_for('main.listings', address=address, filters=act_filters) }}>View Listings</a></span>
+      <span class="lotListingsToggle"><a href={{ url_for('main.listings', address=address, filters=act_filters) }}>View Listings</a></span>
       {%else %}
-      <span style="float:right"><a href={{ url_for('main.lots', address=address, filters=act_filters) }}>View Lots</a></span>
+      <span class="lotListingsToggle"><a href={{ url_for('main.lots', address=address, filters=act_filters) }}>View Lots</a></span>
       {% endif %}
       {% endif %}
     </li>
@@ -51,7 +51,7 @@
             <img src={{ url_for('static', filename='images') + "/houses/" + listing.images.first().path + "1.jpg" }} }}>
           </a>
         </div>
-        <h4 class="visLisAdd"><a href={{url_for('main.report',address=listing.raw_add)}}>{{loop.index}} - {{ listing.street_address }}</a>
+        <h4 class="visLisAdd"><a href={{url_for('main.report',address=listing.raw_add)}}>{{loop.index}}. {{ listing.street_address }}</a>
         {% if current_user.is_authenticated %}
           {% if listing in current_user.favorites.all() %}
               <a href={{ url_for('main.unfavorite', listing_id=listing.id)}}><span class="glyphicon glyphicon-heart" aria-hidden="true"></span></a>

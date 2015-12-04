@@ -68,10 +68,12 @@ span.search-bar{
 #hc-navbar:hover .navbar-nav>li>a {
   transition: color 0.5s ease;
   color:rgba(0,0,0,.38);
+  background-color: rgba(255,255,255,.9);
 }
 #hc-navbar .navbar-nav>li>a:hover {
   transition: color 0.5s ease;
   color: rgba(0,0,0,.87);
+  background-color: rgba(255,255,255,.9);
 }
 
 /****************** Main Modal on Landing Page ******************/
@@ -105,17 +107,24 @@ span.search-bar{
   background-color: rgba(255,255,255,.9);
   border:1px solid rgba(0,0,0,.37);
   padding:20px;
+  padding-bottom: 0px;
   border-radius: 5px;
 
 }
 
-
-#filtersToggle{
-  text-decoration: none;
-  text-align:center;
-  margin-top: 0px;
-  margin-bottom: 0;
+.indexSearchButton>button{
+  border-radius: 0;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
+
+.indexSearchButton>button:hover{
+  transition: color 0.5s ease;
+  background-color:#3AC690;
+  color:white;
+}
+
+
 
 /****************** Listings View ******************/
 
@@ -135,7 +144,57 @@ span.search-bar{
 }
 
 #mapViewRightSide{
+
   border-top:1px solid rgba(0,0,0,.12); 
+}
+
+.sortOption {
+  font-size: 16px;
+  color: rgba(0,0,0,.54);
+}
+.sortOption:hover, .sortOption:active, .sortOption:focus {
+  color: #3AC690;
+  text-decoration: none;
+}
+
+
+.lotListingsToggle a{
+  float:right;
+  margin-left: 20px;
+  font-size: 14px;
+  padding:4px;
+  border-radius: 3px;
+  background-color: #3AC690;
+  border:1px solid #3AC690;
+  color:rgba(255,255,255,1);
+}
+
+.lotListingsToggle a:hover{
+  text-decoration: none;
+  background-color: rgba(255,255,255,1);
+  border:1px solid #3AC690;
+  color: #3AC690;
+}
+
+.visLisAdd>a{
+  display: inline;
+  color:rgba(0,0,0,.87);
+}
+.visLisAdd a:not(:first-child):hover {
+  text-decoration: none;
+}
+
+span.glyphicon-heart, span.glyphicon-heart-empty{
+  float:right;
+  display: inline;
+  color:#F44336;
+  font-size: 25px;
+  margin-right: 10px;
+  top:5px;
+}
+span.glyphicon-heart-empty:hover{
+  color:#EF9A9A;
+  text-decoration: none;
 }
 
 #listings.list-group li {
@@ -147,3 +206,122 @@ span.search-bar{
   border:none;
   margin-bottom: 5px;
 }
+
+/****************** Report Page ******************/
+
+#carousel{
+  padding-top: 13px;
+}
+
+.reportTabs ul li a{
+  color:rgba(0,0,0,.54);
+  border-radius: 0;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.reportTabs ul li.active a{
+  border-radius:0;
+  background-color:#3AC690;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+.reportTabs ul li.active a:hover{  
+  background-color:#3AC690;
+}
+
+.list-group li.list-group-item{
+  border:none;
+  border-top: 1px solid rgba(0,0,0,.12);
+}
+.list-group li.list-group-item:last-child{
+  border-bottom: 1px solid rgba(0,0,0,.12);
+}
+
+.list-group-item > span{
+  font-weight: bold;
+}
+
+
+
+/****************** Filters Layout ******************/
+
+#filtersToggle{
+  text-decoration: none;
+  text-align:center;
+  margin-top: 5px;
+  margin-bottom: 0;
+}
+#filtersToggle a{
+  color:rgba(0,0,0,.54);
+}
+#filtersToggle a:hover{
+  text-decoration: none;
+  color:#3AC690;
+}
+
+.homeFilters div label{
+  font-size: 14px;
+}
+.homeFilters #showFilters:hover{
+  padding:10px;
+}
+#filters.homeFilters #min_rooms{
+  margin-top: 10px;
+}
+
+.navFilters div:nth-child(3), .navFilters div:nth-child(4){
+  text-align: center;
+}
+#filters.navFilters label{
+  padding-left:5px;
+}
+#filters.navFilters #min_rooms, #filters.navFilters #max_rooms, #filters.navFilters #min_bathrooms, #filters.navFilters #max_bathrooms{
+  width:25%;
+  height:25px;
+  display: inline;
+  outline: none;
+}
+#filters.navFilters #min_price, #filters.navFilters #max_price, #filters.navFilters #min_area, #filters.navFilters #max_area{
+  width:40%;
+  height:25px;
+  display: inline;
+  outline: none;
+}
+
+#filters #min_rooms, #filters #max_rooms, #filters #min_bathrooms, #filters #max_bathrooms{
+  width:20%;
+  height:25px;
+  display: inline;
+  outline: none;
+}
+#filters #min_price, #filters #max_price, #filters #min_area, #filters #max_area{
+  width:30%;
+  height:25px;
+  display: inline;
+  outline: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

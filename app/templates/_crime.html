@@ -7,10 +7,9 @@
 <li role="presentation" id="miscInfoBtn"><a href="#"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Misc</a></li>
 </ul>
 <ul class="list-group">
-  <li class="list-group-item"></li>
-  <li class="list-group-item">Current violent crime rate: {{ crime_info.violent_crime_rate }} per 1,000 residents.</li>
-  <li class="list-group-item">Current property crime rate: {{ crime_info.property_crime_rate }} per 1,000 residents.</li>
-  <li class="list-group-item">Crimes per square mile: {{ crime_info.crime_per_mile }}.</li>
+  <li class="list-group-item"><span>Current violent crime rate:</span> {{ crime_info.violent_crime_rate }} per 1,000 residents.</li>
+  <li class="list-group-item"><span>Current property crime rate:</span> {{ crime_info.property_crime_rate }} per 1,000 residents.</li>
+  <li class="list-group-item"><span>Crimes per square mile:</span> {{ crime_info.crime_per_mile }}.</li>
   <li class="list-group-item">For sex offender information, <a href="https://www.fbi.gov/scams-safety/registry">click here.</a></li>
   <li class="list-group-item"><div id="violent_crime_chart_div"></div></li>
   <li class="list-group-item"><div id="property_crime_chart_div"></div></li>
