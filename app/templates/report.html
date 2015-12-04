@@ -21,7 +21,15 @@
                 <a href={{ url_for('main.favorite', listing_id=listing.id)}}><span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span></a>
             {% endif %}
           {% else %}
+            {% if 'favorites' in session %}
+              {% if listing.id|string in session['favorites'].keys() %}
+              <a href={{ url_for('main.unfavorite', listing_id=listing.id)}}><span class="glyphicon glyphicon-heart" aria-hidden="true"></span></a>
+              {% else %}
+              <a href={{ url_for('main.favorite', listing_id=listing.id)}}><span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span></a>
+              {% endif %}
+            {% else %}
             <a href={{ url_for('main.favorite', listing_id=listing.id)}}><span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span></a>
+            {% endif %}
           {% endif %}
       </h4>
         <div id="coords" data-lat="{{listing.lati}}" data-lng="{{listing.longi}}"hidden></div>

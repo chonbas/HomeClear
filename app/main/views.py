@@ -27,6 +27,8 @@ def search():
         filters['min_price']=int(float(g.search.min_price.data.replace(',','').replace('$','')+".0"))
         filters['max_price']=int(float(g.search.max_price.data.replace(',','').replace('$','')+".0"))
         return searchParse(query, filters)
+    flash('Please enter a valid address - either a specific street address with city and state, or zipcode.')
+    return redirect(request.args.get('next') or request.referrer or url_for('main.index'))
 
 @main.route('/', methods=['GET', 'POST'])
 def index():

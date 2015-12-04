@@ -20,14 +20,14 @@
                 <br>
         </div>
         <p style="text-align:center" id="filtersToggle">
-          <a href="#" class="dropdown-toggle" id="showFilters" data-toggle="dropdown">
+          <a href="#" id="showFilters">
              Show Filters
           </a>
-          <a href="#" class="dropdown-toggle" id="hideFilters" data-toggle="dropdown">
+          <a href="#" id="hideFilters">
              Hide Filters
           </a>
         </p>
-        <div id="filters" class="homeFilters">
+        <div id="filters" class="homeFilters" hidden>
       <div class="form-group "><label class="control-label" for="rooms">Bedrooms:</label>
                 <input class="form-control" placeholder="Min" id="min_rooms" name="min_rooms" type="text" value="">
                 -
@@ -43,7 +43,7 @@
                 -
                 <input class="form-control" placeholder="Max" id="max_area" name="max_area" type="text" value="">
         </div>
-      <div class="form-group "><label class="control-label" for="price">Min Price:</label>
+      <div class="form-group "><label class="control-label" for="price">Price:</label>
                 <input class="form-control" placeholder="Min" id="min_price" name="min_price" type="text" value="">
                 -
                 <input class="form-control" placeholder="Max" id="max_price" name="max_price" type="text" value="">
@@ -51,14 +51,6 @@
       </div>
       </form>
       <br>
-     <!--  <p id="filtersToggle" style="text-align:center">
-        <a href="#" class="dropdown-toggle" id="showFilters" data-toggle="dropdown">
-           Show Filters<b class="caret"></b>
-        </a>
-        <a href="#" class="dropdown-toggle" id="hideFilters" data-toggle="dropdown">
-           Hide Filters<b class="caret"></b>
-        </a>
-      </p> -->
   </div>
   <div class="col-md-4"></div>
   <div class="col-md-4"></div>
@@ -75,5 +67,5 @@
 
 {% block scripts %}
 {{ super() }}
-
+<script type="text/javascript" src="{{url_for('static',filename='js/filters.js') }}"></script>
 {% endblock %}
